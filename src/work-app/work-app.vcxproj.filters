@@ -16,13 +16,22 @@
     <Filter Include="Form files">
       <UniqueIdentifier>{1c8877e0-58cd-4ee2-90d6-8d485cc360a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Generated files">
+      <UniqueIdentifier>{f88e484f-7075-4642-96c5-4fef7e0a8106}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mainwindow.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="ui_mainwindow.h">
+      <Filter>Generated files</Filter>
+    </ClInclude>
+    <ClInclude Include="x64\Debug\moc_predefs.h">
+      <Filter>Generated files</Filter>
+    </ClInclude>
+    <ClInclude Include="x64\Release\moc_predefs.h">
+      <Filter>Generated files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -35,10 +44,22 @@
     <ClCompile Include="mainwindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="x64\Debug\moc_mainwindow.cpp">
+      <Filter>Generated files</Filter>
+    </ClCompile>
+    <ClCompile Include="x64\Release\moc_mainwindow.cpp">
+      <Filter>Generated files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="mainwindow.ui">
+    <CustomBuild Include="mainwindow.ui">
       <Filter>Form files</Filter>
-    </None>
+    </CustomBuild>
+    <CustomBuild Include="mainwindow.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="moc_predefs.h.cbt">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>
