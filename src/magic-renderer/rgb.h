@@ -1,5 +1,5 @@
-#ifndef __MAGIC_RENDERER_POINT_H
-#define __MAGIC_RENDERER_POINT_H
+#ifndef __MAGIC_RENDERER_RGB_H
+#define __MAGIC_RENDERER_RGB_H
 
 namespace Magic
 {
@@ -9,4 +9,4 @@ namespace Magic
     };
 }
 
-#endif // __MAGIC_RENDERER_POINT_H
+#endif // __MAGIC_RENDERER_RGB_H
