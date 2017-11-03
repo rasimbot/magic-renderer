@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "renderer.h"
-#include "point.h"
 
 Magic::Renderer::Renderer()
 {}
@@ -21,11 +20,5 @@ Magic::RGB *Magic::Renderer::buf() const
     return m_buf;
 }
 
-void Magic::Renderer::setSize(float a_width, float a_height)
-{
-    m_width = a_width; m_height = a_height;
-}
-
-void Magic::Renderer::look(const Point &a_from, const Point &a_to, const Point &a_left)
-{
-}
+void Magic::Renderer::look(const Vector3 &a_from, const Vector3 &a_to, const Vector3 &a_up)
+{}

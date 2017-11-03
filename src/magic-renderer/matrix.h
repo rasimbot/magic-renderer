@@ -1,6 +1,8 @@
 #ifndef __MAGIC_RENDERER_MATRIX_H
 #define __MAGIC_RENDERER_MATRIX_H
 
+#include "vector4.h"
+
 namespace Magic
 {
     struct Matrix
@@ -11,7 +13,7 @@ namespace Magic
               m41 = 0, m42 = 0, m43 = 0, m44 = 1;
     };
 
-    Matrix operator *(const Matrix &o, const Matrix &a)
+    inline Matrix operator *(const Matrix &o, const Matrix &a)
     {
         return Matrix{ o.m11 * a.m11 + o.m12 * a.m21 + o.m13 * a.m31 + o.m14 * a.m41,
                        o.m11 * a.m12 + o.m12 * a.m22 + o.m13 * a.m32 + o.m14 * a.m42,
@@ -29,6 +31,14 @@ namespace Magic
                        o.m41 * a.m12 + o.m42 * a.m22 + o.m43 * a.m32 + o.m44 * a.m42,
                        o.m41 * a.m13 + o.m42 * a.m23 + o.m43 * a.m33 + o.m44 * a.m43,
                        o.m41 * a.m14 + o.m42 * a.m24 + o.m43 * a.m34 + o.m44 * a.m44 };
+    }
+
+    inline Vector4 operator *(const Vector4 &o, const Matrix &a)
+    {
+        return Vector4{ o.x * a.m11 + o.y * a.m12 + o.z * a.m13 + o.w * a.m14,
+                        o.x * a.m21 + o.y * a.m22 + o.z * a.m23 + o.w * a.m24,
+                        o.x * a.m31 + o.y * a.m32 + o.z * a.m33 + o.w * a.m34,
+                        o.x * a.m41 + o.y * a.m42 + o.z * a.m43 + o.w * a.m44 };
     }
 }
 

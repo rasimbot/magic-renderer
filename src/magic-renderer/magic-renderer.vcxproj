@@ -146,13 +146,12 @@
     <ClInclude Include="ball.h" />
     <ClInclude Include="matrix.h" />
     <ClInclude Include="object.h" />
-    <ClInclude Include="point.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="rgb.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="triangle.h" />
-    <ClInclude Include="util.h" />
-    <ClInclude Include="vector.h" />
+    <ClInclude Include="vector3.h" />
+    <ClInclude Include="vector4.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ball.cpp" />

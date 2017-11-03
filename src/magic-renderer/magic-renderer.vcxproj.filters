@@ -21,12 +21,6 @@
     <ClInclude Include="renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="point.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="vector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="rgb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -42,7 +36,10 @@
     <ClInclude Include="matrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="util.h">
+    <ClInclude Include="vector3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vector4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

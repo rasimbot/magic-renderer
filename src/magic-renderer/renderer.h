@@ -2,7 +2,7 @@
 #define __MAGIC_RENDERER_RENDERER_H
 
 #include "rgb.h"
-#include "point.h"
+#include "vector3.h"
 #include "matrix.h"
 
 namespace Magic
@@ -19,14 +19,12 @@ namespace Magic
         void setBufferSize(size_t a_bufWidth, size_t a_bufHeight);
         RGB *buf() const;
 
-        void setSize(float a_width, float a_height);
-        void look(const Point &a_from, const Point &a_to, const Point &a_left);
+        void look(const Vector3 &a_from, const Vector3 &a_to, const Vector3 &a_up);
 
     private:
         size_t m_bufWidth = 0, m_bufHeight = 0;
         RGB *m_buf = nullptr;
 
-        float m_width = 0, m_height = 0;
         Matrix m_look;
     };
 }
