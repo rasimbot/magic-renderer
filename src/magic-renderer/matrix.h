@@ -1,6 +1,7 @@
 #ifndef __MAGIC_RENDERER_MATRIX_H
 #define __MAGIC_RENDERER_MATRIX_H
 
+#include "vector3.h"
 #include "vector4.h"
 
 namespace Magic
@@ -33,12 +34,19 @@ namespace Magic
                        o.m41 * a.m14 + o.m42 * a.m24 + o.m43 * a.m34 + o.m44 * a.m44 };
     }
 
-    inline Vector4 operator *(const Vector4 &o, const Matrix &a)
+    inline Vector3 operator *(const Matrix &a_m, const Vector3 &a_v)
     {
-        return Vector4{ o.x * a.m11 + o.y * a.m12 + o.z * a.m13 + o.w * a.m14,
-                        o.x * a.m21 + o.y * a.m22 + o.z * a.m23 + o.w * a.m24,
-                        o.x * a.m31 + o.y * a.m32 + o.z * a.m33 + o.w * a.m34,
-                        o.x * a.m41 + o.y * a.m42 + o.z * a.m43 + o.w * a.m44 };
+        return Vector3{ a_m.m11 * a_v.x + a_m.m12 * a_v.y + a_m.m13 * a_v.z + a_m.m14,
+                        a_m.m21 * a_v.x + a_m.m22 * a_v.y + a_m.m23 * a_v.z + a_m.m24,
+                        a_m.m31 * a_v.x + a_m.m32 * a_v.y + a_m.m33 * a_v.z + a_m.m34 };
+    }
+
+    inline Vector4 operator *(const Matrix &a_m, const Vector4 &a_v)
+    {
+        return Vector4{ a_m.m11 * a_v.x + a_m.m12 * a_v.y + a_m.m13 * a_v.z + a_m.m14 * a_v.w,
+                        a_m.m21 * a_v.x + a_m.m22 * a_v.y + a_m.m23 * a_v.z + a_m.m24 * a_v.w,
+                        a_m.m31 * a_v.x + a_m.m32 * a_v.y + a_m.m33 * a_v.z + a_m.m34 * a_v.w,
+                        a_m.m41 * a_v.x + a_m.m42 * a_v.y + a_m.m43 * a_v.z + a_m.m44 * a_v.w };
     }
 }
 

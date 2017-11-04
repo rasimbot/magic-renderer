@@ -10,7 +10,7 @@ namespace Magic
         float x = 0, y = 0, z = 0;
     };
 
-    inline Vector3 normal(const Vector3 &a)
+    inline Vector3 normalized(const Vector3 &a)
     {
         const float l = std::sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
         return Vector3{ a.x / l, a.y / l, a.z / l };
