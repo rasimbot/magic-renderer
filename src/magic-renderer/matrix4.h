@@ -1,7 +1,6 @@
 #ifndef __MAGIC_RENDERER_MATRIX4_H
 #define __MAGIC_RENDERER_MATRIX4_H
 
-#include "vector3.h"
 #include "vector4.h"
 
 namespace Magic
@@ -32,13 +31,6 @@ namespace Magic
                         o.m41 * a.m12 + o.m42 * a.m22 + o.m43 * a.m32 + o.m44 * a.m42,
                         o.m41 * a.m13 + o.m42 * a.m23 + o.m43 * a.m33 + o.m44 * a.m43,
                         o.m41 * a.m14 + o.m42 * a.m24 + o.m43 * a.m34 + o.m44 * a.m44 };
-    }
-
-    inline Vector3 operator *(const Matrix4 &a_m, const Vector3 &a_v)
-    {
-        return Vector3{ a_m.m11 * a_v.x + a_m.m12 * a_v.y + a_m.m13 * a_v.z + a_m.m14,
-                        a_m.m21 * a_v.x + a_m.m22 * a_v.y + a_m.m23 * a_v.z + a_m.m24,
-                        a_m.m31 * a_v.x + a_m.m32 * a_v.y + a_m.m33 * a_v.z + a_m.m34 };
     }
 
     inline Vector4 operator *(const Matrix4 &a_m, const Vector4 &a_v)

@@ -2,6 +2,7 @@
 #define __MAGIC_RENDERER_RENDERER_H
 
 #include "rgb.h"
+#include "vector3.h"
 #include "matrix4.h"
 
 namespace Magic

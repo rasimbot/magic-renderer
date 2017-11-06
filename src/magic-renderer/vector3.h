@@ -7,8 +7,7 @@ namespace Magic
 {
     struct Vector3
     {
-        float x = 0, y = 0;
-        union { float z, w = 0; };
+        float x = 0, y = 0, z = 0;
     };
 
     inline Vector3 normalized(const Vector3 &a)

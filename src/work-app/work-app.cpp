@@ -2,6 +2,7 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include <renderer.h>
+#include <vector4.h>
 #include <QtGui/QMatrix4x4>
 #include <QtGui/QVector4D>
 #include <sstream>
@@ -21,6 +22,8 @@ int main(int a_argc, char *a_argv[])
 
     l_renderer.setBufferSize(100, 100);
     l_renderer.doIt();
+
+    Magic::Vector4 v4{ r, 1 };
 
     return a.exec();
 }
