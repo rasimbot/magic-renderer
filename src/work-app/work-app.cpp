@@ -13,7 +13,14 @@ int main(int a_argc, char *a_argv[])
     w.show();
 
     Magic::Renderer l_renderer;
-    l_renderer.look(Magic::Vector3{ 0, -1, -10 }, Magic::Vector3{}, Magic::Vector3{ -10, 5, 0 });
+    const auto q1(l_renderer.look(Magic::Vector3{ -1, 2, -3 }, Magic::Vector3{ -1, 2, 3 }, Magic::Vector3{ 0, 5, 0 }));
+    const auto q2(l_renderer.look(Magic::Vector3{ -4, 5, -6 }, Magic::Vector3{ -4, 5, 6 }, Magic::Vector3{ 0, 5, 0 }));
+
+    const auto r(Magic::Vector3{ 10, 10, 10 });
+    const auto u(q1 * q2 * r);
+
+    l_renderer.setBufferSize(100, 100);
+    l_renderer.doIt();
 
     return a.exec();
 }
