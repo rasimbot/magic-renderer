@@ -20,10 +20,5 @@ int main(int a_argc, char *a_argv[])
     const auto r(Magic::Vector3{ 10, 10, 10 });
     const auto u(q1 * q2 * r);
 
-    l_renderer.setBufferSize(100, 100);
-    l_renderer.doIt();
-
-    Magic::Vector4 v4{ r, 1 };
-
     return a.exec();
 }

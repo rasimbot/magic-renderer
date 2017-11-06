@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "renderer.h"
+#include <cassert>
 
 Magic::Renderer::Renderer()
 {}
@@ -11,18 +12,30 @@ void Magic::Renderer::setBufferSize(size_t a_bufWidth, size_t a_bufHeight)
 {
     delete[] m_buf; m_buf = nullptr;
     m_bufWidth = 0; m_bufHeight = 0;
-    m_buf = new RGB[a_bufWidth * a_bufHeight];
+    m_buf = new ARGB[a_bufWidth * a_bufHeight];
     m_bufWidth = a_bufWidth; m_bufHeight = a_bufHeight;
+    calcBufToCam();
 }
 
-Magic::RGB *Magic::Renderer::buf() const
+size_t Magic::Renderer::bufWidth() const
+{
+    return m_bufWidth;
+}
+
+size_t Magic::Renderer::bufHeight() const
+{
+    return m_bufHeight;
+}
+
+Magic::ARGB *Magic::Renderer::buf() const
 {
     return m_buf;
 }
 
 void Magic::Renderer::setCameraSizes(float a_width, float a_height, float a_length)
 {
-    m_width = a_width; m_height = a_height; m_length = a_length;
+    m_camWidth = a_width; m_camHeight = a_height; m_camLength = a_length;
+    calcBufToCam();
 }
 
 Magic::Matrix4 Magic::Renderer::look(const Vector3 &a_from, const Vector3 &a_to, const Vector3 &a_up)
@@ -32,15 +45,10 @@ Magic::Matrix4 Magic::Renderer::look(const Vector3 &a_from, const Vector3 &a_to,
 
 void Magic::Renderer::doIt()
 {
-    const float l_sx = float(m_width) / m_bufWidth, l_sy = float(m_height) / m_bufHeight;
+    assert(m_buf != nullptr);
     for (size_t i = 0; i < m_bufHeight; i++)
-    {
-        const float l_pixY = float(m_bufHeight) / 2 - i;
         for (size_t j = 0; j < m_bufWidth; j++)
-        {
-            const float l_pixX = float(m_bufWidth) / 2 - j;
-        }
-    }
+            m_buf[j + i * m_bufWidth] = processPixel(m_bufToCam * Vector4{ float(j), float(i) });
 }
 
 Magic::Matrix4 Magic::Renderer::transf(const Vector3 &a_from, const Vector3 &a_to, const Vector3 &a_up)
@@ -53,4 +61,18 @@ Magic::Matrix4 Magic::Renderer::transf(const Vector3 &a_from, const Vector3 &a_t
                     l_ya.x, l_ya.y, l_ya.z, -dot(l_ya, a_from),
                     l_za.x, l_za.y, l_za.z, -dot(l_za, a_from),
                     0, 0, 0, 1 };
+}
+
+void Magic::Renderer::calcBufToCam()
+{
+    m_bufToCam = { m_camWidth / m_bufWidth, 0, 0, m_camWidth / 2 * (1 / m_bufWidth - 1),
+                   0, -m_camHeight / m_bufHeight, 0, -m_camHeight / 2 * (1 / m_bufHeight - 1),
+                   0, 0, 1, 0,
+                   0, 0, 0, 1 };
+}
+
+static size_t q = 0;
+Magic::ARGB Magic::Renderer::processPixel(const Vector4 &a)
+{
+    return ARGB{ unsigned char(q), unsigned char(q), unsigned char(q++), 255 };
 }

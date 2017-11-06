@@ -50,6 +50,15 @@
     <ClCompile Include="x64\Release\moc_mainwindow.cpp">
       <Filter>Generated files</Filter>
     </ClCompile>
+    <ClCompile Include="x64\Debug\moc_drawarea.cpp">
+      <Filter>Generated files</Filter>
+    </ClCompile>
+    <ClCompile Include="x64\Release\moc_drawarea.cpp">
+      <Filter>Generated files</Filter>
+    </ClCompile>
+    <ClCompile Include="drawarea.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="mainwindow.ui">
@@ -59,6 +68,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="moc_predefs.h.cbt">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="drawarea.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

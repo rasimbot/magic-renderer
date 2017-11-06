@@ -143,11 +143,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="argb.h" />
     <ClInclude Include="ball.h" />
     <ClInclude Include="matrix4.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="renderer.h" />
-    <ClInclude Include="rgb.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="triangle.h" />
     <ClInclude Include="vector3.h" />

@@ -21,9 +21,6 @@
     <ClInclude Include="renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="rgb.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ball.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -40,6 +37,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="matrix4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="argb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
