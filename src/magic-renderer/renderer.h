@@ -30,6 +30,7 @@ namespace Magic
 
     private:
         void calcBufToCam();
+        ARGB initialRay(const Matrix4 &a);
         ARGB processPixel(const Vector4 &a);
 
         size_t m_bufWidth = 0, m_bufHeight = 0;

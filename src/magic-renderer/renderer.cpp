@@ -65,14 +65,25 @@ Magic::Matrix4 Magic::Renderer::transf(const Vector3 &a_from, const Vector3 &a_t
 
 void Magic::Renderer::calcBufToCam()
 {
-    m_bufToCam = { m_camWidth / m_bufWidth, 0, 0, m_camWidth / 2 * (1 / m_bufWidth - 1),
-                   0, -m_camHeight / m_bufHeight, 0, -m_camHeight / 2 * (1 / m_bufHeight - 1),
-                   0, 0, 1, 0,
-                   0, 0, 0, 1 };
+    m_bufToCam = Matrix4{ m_camWidth / m_bufWidth, 0, 0, m_camWidth / 2 * (1.0f / m_bufWidth - 1),
+                          0, -m_camHeight / m_bufHeight, 0, -m_camHeight / 2 * (1.0f / m_bufHeight - 1),
+                          0, 0, 1, 0,
+                          0, 0, 0, 1 };
 }
 
-static size_t q = 0;
+const float s_radius = 1;
+const Magic::Vector3 s_coords{ 0, 0, 5 };
+Magic::ARGB Magic::Renderer::initialRay(const Matrix4 &a)
+{
+    const Vector3 l_coords(a * s_coords);
+    const float l_distance = std::sqrt(l_coords.x * l_coords.x + l_coords.y * l_coords.y);
+    return l_distance <= s_radius ? ARGB{ 0, 255, 0, 255 } : ARGB();
+}
+
 Magic::ARGB Magic::Renderer::processPixel(const Vector4 &a)
 {
-    return ARGB{ unsigned char(q), unsigned char(q), unsigned char(q++), 255 };
+    const Vector3 l_to(a + (a - Vector3{ 0, 0, -m_camLength }));
+    const Vector3 l_up{ 0, 1, 0 };
+    const Matrix4 l_camRay(transf(a, l_to, l_up));
+    return initialRay(l_camRay * m_look);
 }

@@ -16,6 +16,11 @@ namespace Magic
         return Vector3{ a.x / l, a.y / l, a.z / l };
     }
 
+    inline Vector3 operator +(const Vector3 &o, const Vector3 &a)
+    {
+        return Vector3{ o.x + a.x, o.y + a.y, o.z + a.z };
+    }
+
     inline Vector3 operator -(const Vector3 &o, const Vector3 &a)
     {
         return Vector3{ o.x - a.x, o.y - a.y, o.z - a.z };

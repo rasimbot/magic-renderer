@@ -20,6 +20,7 @@ public:
 private slots:
     void onDrawAreaPaint();
     void on_pushButton_do_clicked();
+    void on_pushButton_save_clicked();
 
 private:
     Ui::MainWindow *m_ui;
