@@ -1,12 +1,13 @@
 #include "stdafx.h"
 #include "renderer.h"
-#include <cassert>
 
 Magic::Renderer::Renderer()
 {}
 
 Magic::Renderer::~Renderer()
-{}
+{
+    for (auto &q : m_objects) delete q;
+}
 
 void Magic::Renderer::setBufferSize(size_t a_bufWidth, size_t a_bufHeight)
 {
@@ -43,6 +44,12 @@ Magic::Matrix4 Magic::Renderer::look(const Vector3 &a_from, const Vector3 &a_to,
     return m_look = transf(a_from, a_to, a_up);
 }
 
+void Magic::Renderer::add(Object *a)
+{
+    assert(a != nullptr);
+    m_objects.push_back(a);
+}
+
 void Magic::Renderer::doIt()
 {
     assert(m_buf != nullptr);
@@ -71,13 +78,19 @@ void Magic::Renderer::calcBufToCam()
                           0, 0, 0, 1 };
 }
 
-const float s_radius = 1;
-const Magic::Vector3 s_coords{ 0, 0, 5 };
 Magic::ARGB Magic::Renderer::initialRay(const Matrix4 &a)
 {
-    const Vector3 l_coords(a * s_coords);
-    const float l_distance = std::sqrt(l_coords.x * l_coords.x + l_coords.y * l_coords.y);
-    return l_distance <= s_radius ? ARGB{ 0, 255, 0, 255 } : ARGB();
+    Object *l_o = nullptr;
+    float l_z1;
+    for (auto &q : m_objects)
+    {
+        assert(q != nullptr);
+        const auto l_z2 = q->hit(a);
+        if (l_z2 < 0 || l_o != nullptr && l_z1 < l_z2) continue;
+        l_o = q;
+        l_z1 = l_z2;
+    }
+    return l_o == nullptr ? ARGB() : l_o->color();
 }
 
 Magic::ARGB Magic::Renderer::processPixel(const Vector4 &a)

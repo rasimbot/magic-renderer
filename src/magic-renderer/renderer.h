@@ -4,6 +4,8 @@
 #include "argb.h"
 #include "vector3.h"
 #include "matrix4.h"
+#include <list>
+#include "object.h"
 
 namespace Magic
 {
@@ -24,6 +26,8 @@ namespace Magic
         void setCameraSizes(float a_width, float a_height, float a_length);
         Matrix4 look(const Vector3 &a_from, const Vector3 &a_to, const Vector3 &a_up);
 
+        void add(Object *a);
+
         void doIt();
 
         static Matrix4 transf(const Vector3 &a_from, const Vector3 &a_to, const Vector3 &a_up);
@@ -38,6 +42,8 @@ namespace Magic
 
         float m_camWidth = 0, m_camHeight = 0, m_camLength = 0;
         Matrix4 m_bufToCam, m_look;
+
+        std::list<Object *> m_objects;
     };
 }
 
