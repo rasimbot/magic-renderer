@@ -95,8 +95,9 @@ Magic::ARGB Magic::Renderer::initialRay(const Matrix4 &a)
 
 Magic::ARGB Magic::Renderer::processPixel(const Vector4 &a)
 {
-    const Vector3 l_to(a + (a - Vector3{ 0, 0, -m_camLength }));
+    const Vector3 l_from;
+    const Vector3 l_to{ a.x, a.y, m_camLength };
     const Vector3 l_up{ 0, 1, 0 };
-    const Matrix4 l_camRay(transf(a, l_to, l_up));
+    const Matrix4 l_camRay(transf(l_from, l_to, l_up));
     return initialRay(l_camRay * m_look);
 }
