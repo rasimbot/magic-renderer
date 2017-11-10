@@ -78,19 +78,21 @@ void Magic::Renderer::calcBufToCam()
                           0, 0, 0, 1 };
 }
 
-Magic::ARGB Magic::Renderer::initialRay(const Matrix4 &a)
+Magic::RGBf Magic::Renderer::ray(const Matrix4 &a_space, const RGBf &a_reflect)
 {
     Object *l_o = nullptr;
-    float l_z1;
+    Matrix4 l_n1;
     for (auto &q : m_objects)
     {
         assert(q != nullptr);
-        const auto l_z2 = q->hit(a);
-        if (l_z2 < 0 || l_o != nullptr && l_z1 < l_z2) continue;
+        Matrix4 l_n2;
+        if (!q->hit(a_space, l_n2) || l_o != nullptr && l_n1.m34 < l_n2.m34) continue;
         l_o = q;
-        l_z1 = l_z2;
+        l_n1 = l_n2;
     }
-    return l_o == nullptr ? ARGB() : l_o->color();
+    if (l_o == nullptr) return RGBf();
+    if (l_o->light()) return a_reflect * l_o->rgbf();
+    return ray(l_n1 * a_space, a_reflect * l_o->rgbf());
 }
 
 Magic::ARGB Magic::Renderer::processPixel(const Vector4 &a)
@@ -99,5 +101,8 @@ Magic::ARGB Magic::Renderer::processPixel(const Vector4 &a)
     const Vector3 l_to{ a.x, a.y, m_camLength };
     const Vector3 l_up{ 0, 1, 0 };
     const Matrix4 l_camRay(transf(l_from, l_to, l_up));
-    return initialRay(l_camRay * m_look);
+    auto l_rgbf(ray(l_camRay, RGBf{ 1, 1, 1 }));
+    return ARGB{ unsigned char(std::nearbyint(255 * l_rgbf.b)),
+                 unsigned char(std::nearbyint(255 * l_rgbf.g)),
+                 unsigned char(std::nearbyint(255 * l_rgbf.r)) };
 }

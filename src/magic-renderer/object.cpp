@@ -4,12 +4,17 @@
 Magic::Object::~Object()
 {}
 
-float Magic::Object::hit(const Matrix4 &a_ray) const
+bool Magic::Object::hit(const Matrix4 &a_ray, Matrix4 &a_normal) const
 {
     return false;
 }
 
-Magic::ARGB Magic::Object::color() const
+bool Magic::Object::light() const
 {
-    return ARGB();
+    return false;
+}
+
+Magic::RGBf Magic::Object::rgbf() const
+{
+    return RGBf();
 }

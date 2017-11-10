@@ -3,6 +3,7 @@
 
 #include "matrix4.h"
 #include "argb.h"
+#include "rgbf.h"
 
 namespace Magic
 {
@@ -11,8 +12,9 @@ namespace Magic
     public:
         virtual ~Object();
 
-        virtual float hit(const Matrix4 &a_ray) const;
-        virtual ARGB color() const;
+        virtual bool hit(const Matrix4 &a_ray, Matrix4 &a_normal) const;
+        virtual bool light() const;
+        virtual RGBf rgbf() const;
     };
 }
 

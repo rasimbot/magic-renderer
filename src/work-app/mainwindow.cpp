@@ -39,14 +39,15 @@ void MainWindow::on_pushButton_do_clicked()
 {
     Q_ASSERT(m_ui != nullptr && m_drawArea != nullptr);
     m_r.setBufferSize(m_drawArea->width(), m_drawArea->height());
-    m_r.setCameraSizes(1, 1, 2);
+    m_r.setCameraSizes(2, 2, 2);
 
     m_r.look(Magic::Vector3{ 0, 0, 0 }, Magic::Vector3{ 0, 0, 10 }, Magic::Vector3{ 0, 1, 0 });
 
-    auto l_object1(std::make_unique<Magic::Ball>(Magic::Vector3{ 0.2f, 0, 8 }, 1, Magic::ARGB{ 0, 0, 255 }));
-    auto l_object2(std::make_unique<Magic::Ball>(Magic::Vector3{ -0.1f, 0, 4 }, 0.4, Magic::ARGB{ 0, 255, 0 }));
+    auto l_object1(std::make_unique<Magic::Ball>(Magic::Vector3{ 2, 0, 7 }, 1, false, Magic::RGBf{ 0.95f, 0.95f, 0.05f }));
     m_r.add(l_object1.get());
     l_object1.release();
+
+    auto l_object2(std::make_unique<Magic::Ball>(Magic::Vector3{ -2, 0, 7 }, 2.5f, true, Magic::RGBf{ 0.05f, 0.95f, 0.95f }));
     m_r.add(l_object2.get());
     l_object2.release();
 

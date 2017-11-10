@@ -9,16 +9,18 @@ namespace Magic
     class Ball : public Object
     {
     public:
-        Ball(const Vector3 &a_p, float a_r, const ARGB &a_c);
+        Ball(const Vector3 &a_p, float a_r, bool a_light, const RGBf &a_rgbf);
         virtual ~Ball();
 
-        virtual float hit(const Matrix4 &a_ray) const override;
-        virtual ARGB color() const override;
+        virtual bool hit(const Matrix4 &a_ray, Matrix4 &a_normal) const override;
+        virtual bool light() const override;
+        virtual RGBf rgbf() const override;
 
     private:
         Vector3 m_p;
         float m_r;
-        ARGB m_c;
+        bool m_light;
+        RGBf m_rgbf;
     };
 }
 
