@@ -10,6 +10,12 @@ namespace Magic
         float x = 0, y = 0, z = 0;
     };
 
+    inline Vector3 perpendicular(const Vector3 &a)
+    {
+        //https://stackoverflow.com/questions/11132681
+        return std::abs(a.z) < std::abs(a.x) ? Vector3{ a.y, -a.x, 0 } : Vector3{ 0, -a.z, a.y };
+    }
+
     inline Vector3 normalized(const Vector3 &a)
     {
         const float l = std::sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
