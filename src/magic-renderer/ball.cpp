@@ -18,7 +18,7 @@ bool Magic::Ball::hit(const Matrix4 &a_ray, Matrix4 &a_normal) const
     const float l_sqrt = std::sqrt(l_d);
     const float l_z1 = l_inRaySpace.z + l_sqrt, l_z2 = l_inRaySpace.z - l_sqrt;
     if (l_z1 < 0 || l_z2 < 0) return false;
-    const Vector3 l_from{ 0, 0, std::min(l_z1, l_z2) };
+    const Vector3 l_from(0, 0, std::min(l_z1, l_z2));
     const Vector3 l_zDir(l_from - l_inRaySpace);
     const Vector3 l_to(l_from + l_zDir);
     const Vector3 l_up(perpendicular(l_zDir));

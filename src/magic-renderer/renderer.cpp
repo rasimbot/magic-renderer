@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "renderer.h"
+#include "func.h"
 
 Magic::Renderer::Renderer()
 {}
@@ -98,8 +99,8 @@ Magic::RGBf Magic::Renderer::ray(const Matrix4 &a_space, const RGBf &a_reflect)
 Magic::ARGB Magic::Renderer::processPixel(const Vector4 &a)
 {
     const Vector3 l_from;
-    const Vector3 l_to{ a.x, a.y, m_camLength };
-    const Vector3 l_up{ 0, 1, 0 };
+    const Vector3 l_to(a.x, a.y, m_camLength);
+    const Vector3 l_up(0, 1, 0);
     const Matrix4 l_camRay(transf(l_from, l_to, l_up));
     auto l_rgbf(ray(l_camRay, RGBf{ 1, 1, 1 }));
     return ARGB{ unsigned char(std::nearbyint(255 * l_rgbf.b)),

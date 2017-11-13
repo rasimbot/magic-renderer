@@ -145,12 +145,14 @@
   <ItemGroup>
     <ClInclude Include="argb.h" />
     <ClInclude Include="ball.h" />
+    <ClInclude Include="func.h" />
     <ClInclude Include="matrix4.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="rgbf.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="triangle.h" />
+    <ClInclude Include="vector2.h" />
     <ClInclude Include="vector3.h" />
     <ClInclude Include="vector4.h" />
   </ItemGroup>
