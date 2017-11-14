@@ -7,6 +7,7 @@
 #include <QtGui/QPainter>
 #include <QFileDialog>
 #include <ball.h>
+#include <triangle.h>
 #include <memory>
 
 MainWindow::MainWindow(QWidget *a_parent) :
@@ -43,13 +44,41 @@ void MainWindow::on_pushButton_do_clicked()
 
     m_r.look(Magic::Vector3(0, 0, 0), Magic::Vector3(0, 0, 10), Magic::Vector3(0, 1, 0));
 
-    auto l_object1(std::make_unique<Magic::Ball>(Magic::Vector3(2, 0, 7), 1, false, Magic::RGBf{ 0.95f, 0.95f, 0.05f }));
+    auto l_object1(std::make_unique<Magic::Ball>(Magic::Vector3(0, -1, 6), 0.8, false, Magic::RGBf{ 0.6f, 0.6f, 0.6f }));
     m_r.add(l_object1.get());
     l_object1.release();
 
-    auto l_object2(std::make_unique<Magic::Ball>(Magic::Vector3(-2, 0, 7), 2.5f, true, Magic::RGBf{ 0.05f, 0.95f, 0.95f }));
+    auto l_object2(std::make_unique<Magic::Ball>(Magic::Vector3(0, 1, 6), 0.8, true, Magic::RGBf{ 0.95f, 0.95f, 0.05f }));
     m_r.add(l_object2.get());
     l_object2.release();
+
+    auto l_object3(std::make_unique<Magic::Triangle>(Magic::Vector3(-2, -2, 4),
+                                                     Magic::Vector3(-2, 2, 8),
+                                                     Magic::Vector3(-2, 2, 4),
+                                                     true, Magic::RGBf{ 0.05f, 0.95f, 0.95f }));
+    m_r.add(l_object3.get());
+    l_object3.release();
+
+    auto l_object4(std::make_unique<Magic::Triangle>(Magic::Vector3(-2, -2, 4),
+                                                     Magic::Vector3(-2, -2, 8),
+                                                     Magic::Vector3(-2, 2, 8),
+                                                     true, Magic::RGBf{ 0.05f, 0.95f, 0.95f }));
+    m_r.add(l_object4.get());
+    l_object4.release();
+
+    auto l_object5(std::make_unique<Magic::Triangle>(Magic::Vector3(2, 2, 4),
+                                                     Magic::Vector3(2, 2, 8),
+                                                     Magic::Vector3(2, -2, 4),
+                                                     false, Magic::RGBf{ 0.5f, 0.05f, 0.5f }));
+    m_r.add(l_object5.get());
+    l_object5.release();
+
+    auto l_object6(std::make_unique<Magic::Triangle>(Magic::Vector3(2, -2, 8),
+                                                     Magic::Vector3(2, -2, 4),
+                                                     Magic::Vector3(2, 2, 8),
+                                                     false, Magic::RGBf{ 0.5f, 0.05f, 0.5f }));
+    m_r.add(l_object6.get());
+    l_object6.release();
 
     m_r.doIt();
 

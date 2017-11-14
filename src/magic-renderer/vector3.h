@@ -16,6 +16,8 @@ namespace Magic
         operator Vector2() const { return Vector2{ x, y }; }
     };
 
+    inline Vector3 operator -(const Vector3 &a) { return Vector3(-a.x, -a.y, -a.z); }
+
     inline Vector3 perpendicular(const Vector3 &a)
     {
         //https://stackoverflow.com/questions/11132681
