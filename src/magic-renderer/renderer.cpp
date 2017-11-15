@@ -83,13 +83,14 @@ Magic::RGBf Magic::Renderer::ray(const Matrix4 &a_space, const RGBf &a_reflect)
 {
     Object *l_o = nullptr;
     Matrix4 l_n1;
+    float l_z1 = 0;
     for (auto &q : m_objects)
     {
         assert(q != nullptr);
         Matrix4 l_n2;
-        if (!q->hit(a_space, l_n2) || l_o != nullptr && l_n1.m34 < l_n2.m34) continue;
-        l_o = q;
-        l_n1 = l_n2;
+        float l_z2 = 0;
+        if (!q->hit(a_space, l_n2, l_z2) || l_o != nullptr && l_z1 < l_z2) continue;
+        l_o = q; l_n1 = l_n2; l_z1 = l_z2;
     }
     if (l_o == nullptr) return RGBf();
     if (l_o->light()) return a_reflect * l_o->rgbf();

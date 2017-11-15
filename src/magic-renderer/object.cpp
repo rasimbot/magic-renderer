@@ -4,7 +4,7 @@
 Magic::Object::~Object()
 {}
 
-bool Magic::Object::hit(const Matrix4 &a_ray, Matrix4 &a_normal) const
+bool Magic::Object::hit(const Matrix4 &a_ray, Matrix4 &a_normal, float &a_depth) const
 {
     return false;
 }

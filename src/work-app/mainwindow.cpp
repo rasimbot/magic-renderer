@@ -6,9 +6,8 @@
 #include <QGridLayout>
 #include <QtGui/QPainter>
 #include <QFileDialog>
-#include <ball.h>
-#include <triangle.h>
 #include <memory>
+#include <QtGui/QMatrix4x4>
 
 MainWindow::MainWindow(QWidget *a_parent) :
     QWidget(a_parent),
@@ -44,13 +43,13 @@ void MainWindow::on_pushButton_do_clicked()
 
     m_r.look(Magic::Vector3(0, 0, 0), Magic::Vector3(0, 0, 10), Magic::Vector3(0, 1, 0));
 
-    auto l_object1(std::make_unique<Magic::Ball>(Magic::Vector3(0, -1, 6), 0.8, false, Magic::RGBf{ 0.6f, 0.6f, 0.6f }));
+    auto l_object1(std::make_unique<Magic::Ball>(Magic::Vector3(-1, 0, 6), 0.8, false, Magic::RGBf{ 0.6f, 0.6f, 0.6f }));
     m_r.add(l_object1.get());
-    l_object1.release();
+    m_ball1 = l_object1.release();
 
-    auto l_object2(std::make_unique<Magic::Ball>(Magic::Vector3(0, 1, 6), 0.8, true, Magic::RGBf{ 0.95f, 0.95f, 0.05f }));
+    auto l_object2(std::make_unique<Magic::Ball>(Magic::Vector3(1, 0, 6), 0.8, true, Magic::RGBf{ 0.95f, 0.95f, 0.05f }));
     m_r.add(l_object2.get());
-    l_object2.release();
+    m_ball2 = l_object2.release();
 
     auto l_object3(std::make_unique<Magic::Triangle>(Magic::Vector3(-2, -2, 4),
                                                      Magic::Vector3(-2, 2, 8),
@@ -85,7 +84,7 @@ void MainWindow::on_pushButton_do_clicked()
     m_i = QImage(reinterpret_cast<const uchar *>(m_r.buf()),
                     int(m_r.bufWidth()), int(m_r.bufHeight()), QImage::Format_ARGB32);
 
-    update();
+    repaint();
 }
 
 void MainWindow::on_pushButton_save_clicked()
@@ -94,4 +93,36 @@ void MainWindow::on_pushButton_save_clicked()
                             windowTitle() + " - Save", "image1.png", "Images (*.png)"));
     if (l_filepath.isEmpty()) return;
     m_i.save(l_filepath, "PNG");
+}
+
+void MainWindow::on_pushButton_saveSlides_clicked()
+{
+    if (m_ball1 == nullptr || m_ball2 == nullptr) return;
+
+    const auto l_dir(QFileDialog::getExistingDirectory(this, windowTitle() + " - Save directory"));
+    if (l_dir.isEmpty()) return;
+
+    double l_a1 = 0, l_a2 = 0;
+    for (int i = 0; i < 3000; i++)
+    {
+        QMatrix4x4 l_m;
+        l_m.translate(QVector3D(0, 0, 6));
+        l_m.rotate(l_a1, QVector3D(0, 1, 0));
+        l_m.rotate(l_a2, QVector3D(0, 0, 1));
+        const QVector3D l_v1(l_m * QVector3D(-1, 0, 0)), l_v2(l_m * QVector3D(1, 0, 0));
+        m_ball1->set(Magic::Vector3(l_v1.x(), l_v1.y(), l_v1.z()));
+        m_ball2->set(Magic::Vector3(l_v2.x(), l_v2.y(), l_v2.z()));
+
+        m_r.doIt();
+
+        m_i = QImage(reinterpret_cast<const uchar *>(m_r.buf()),
+                        int(m_r.bufWidth()), int(m_r.bufHeight()), QImage::Format_ARGB32);
+
+        repaint();
+
+        m_i.save(QString("%1/%2.png").arg(l_dir).arg(i), "PNG");
+
+        l_a1 += 0.04;
+        l_a2 += 0.28;
+    }
 }

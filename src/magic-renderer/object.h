@@ -12,7 +12,7 @@ namespace Magic
     public:
         virtual ~Object();
 
-        virtual bool hit(const Matrix4 &a_ray, Matrix4 &a_normal) const;
+        virtual bool hit(const Matrix4 &a_ray, Matrix4 &a_normal, float &a_depth) const;
         virtual bool light() const;
         virtual RGBf rgbf() const;
     };

@@ -1,0 +1,5 @@
+WMP compatible:
+ffmpeg -framerate 60 -i "%d.png" -pix_fmt yuv420p -profile:v high -preset veryslow anim1.mp4
+
+Lossless:
+ffmpeg -framerate 60 -i "%d.png" -c:v libx264 -crf 0 -preset veryslow anim1-crf0.mp4

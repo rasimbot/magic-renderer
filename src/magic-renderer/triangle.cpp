@@ -11,7 +11,7 @@ Magic::Triangle::Triangle(const Vector3 &a_p1, const Vector3 &a_p2,
 Magic::Triangle::~Triangle()
 {}
 
-bool Magic::Triangle::hit(const Matrix4 &a_ray, Matrix4 &a_normal) const
+bool Magic::Triangle::hit(const Matrix4 &a_ray, Matrix4 &a_normal, float &a_depth) const
 {
     const Vector3 l_rs1(a_ray * m_p1), l_rs2(a_ray * m_p2), l_rs3(a_ray * m_p3);
     if (!isPointInTriangle(Vector2(), l_rs1, l_rs2, l_rs3)) return false;
@@ -22,6 +22,7 @@ bool Magic::Triangle::hit(const Matrix4 &a_ray, Matrix4 &a_normal) const
     const Vector3 l_to(l_from - l_n);
     const Vector3 l_up(perpendicular(-l_n));
     a_normal = Renderer::transf(l_from, l_to, l_up);
+    a_depth = l_z;
     return true;
 }
 

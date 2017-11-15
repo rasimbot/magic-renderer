@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <renderer.h>
+#include <ball.h>
+#include <triangle.h>
 
 namespace Ui
 {
@@ -21,12 +23,14 @@ private slots:
     void onDrawAreaPaint();
     void on_pushButton_do_clicked();
     void on_pushButton_save_clicked();
+    void on_pushButton_saveSlides_clicked();
 
 private:
     Ui::MainWindow *m_ui;
     QWidget *m_drawArea = nullptr;
     QImage m_i;
     Magic::Renderer m_r;
+    Magic::Ball *m_ball1 = nullptr, *m_ball2 = nullptr;
 };
 
 #endif // __WORK_APP_MAINWINDOW_H

@@ -12,9 +12,11 @@ namespace Magic
         Ball(const Vector3 &a_p, float a_r, bool a_light, const RGBf &a_rgbf);
         virtual ~Ball();
 
-        virtual bool hit(const Matrix4 &a_ray, Matrix4 &a_normal) const override;
+        virtual bool hit(const Matrix4 &a_ray, Matrix4 &a_normal, float &a_depth) const override;
         virtual bool light() const override;
         virtual RGBf rgbf() const override;
+
+        void set(const Vector3 &a_p);
 
     private:
         Vector3 m_p;
