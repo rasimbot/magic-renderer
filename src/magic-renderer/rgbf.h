@@ -8,9 +8,19 @@ namespace Magic
         float b = 0, g = 0, r = 0;
     };
 
+    inline RGBf operator +(const RGBf &o, const RGBf &a)
+    {
+        return RGBf{ o.b + a.b, o.g + a.g, o.r + a.r };
+    }
+
     inline RGBf operator *(const RGBf &o, const RGBf &a)
     {
         return RGBf{ o.b * a.b, o.g * a.g, o.r * a.r };
+    }
+
+    inline RGBf operator /(const RGBf &o, float a)
+    {
+        return RGBf{ o.b / a, o.g / a, o.r / a };
     }
 }
 

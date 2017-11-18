@@ -79,6 +79,7 @@ void MainWindow::on_pushButton_do_clicked()
     m_r.add(l_object6.get());
     l_object6.release();
 
+    m_r.setCameraRaysNum(16);
     m_r.doIt();
 
     m_i = QImage(reinterpret_cast<const uchar *>(m_r.buf()),

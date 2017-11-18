@@ -4,8 +4,10 @@
 #include "argb.h"
 #include "vector3.h"
 #include "matrix4.h"
+#include <vector>
 #include <list>
 #include "object.h"
+#include <random>
 
 namespace Magic
 {
@@ -28,14 +30,20 @@ namespace Magic
 
         void add(Object *a);
 
+        void setCameraRaysNum(size_t a);
+
         void doIt();
 
         static Matrix4 transf(const Vector3 &a_from, const Vector3 &a_to, const Vector3 &a_up);
 
+        float randF() { return m_randF(m_randGen); }
+        static ARGB spectrumToRGB(const RGBf &a);
+
     private:
         void calcBufToCam();
         RGBf ray(const Matrix4 &a_space, const RGBf &a_reflect);
-        ARGB processPixel(const Vector4 &a);
+        RGBf camRay(const Vector3 &a);
+        ARGB processPixel(const Vector3 &a);
 
         size_t m_bufWidth = 0, m_bufHeight = 0;
         ARGB *m_buf = nullptr;
@@ -44,6 +52,12 @@ namespace Magic
         Matrix4 m_bufToCam, m_look;
 
         std::list<Object *> m_objects;
+
+        std::vector<RGBf> m_camSamples;
+
+        std::random_device m_randDev;
+        std::mt19937 m_randGen;
+        std::uniform_real_distribution<float> m_randF;
     };
 }
 

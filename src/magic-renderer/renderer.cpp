@@ -2,7 +2,8 @@
 #include "renderer.h"
 #include "func.h"
 
-Magic::Renderer::Renderer()
+Magic::Renderer::Renderer() :
+    m_randGen(m_randDev()), m_randF(-0.5f, 0.5f)
 {}
 
 Magic::Renderer::~Renderer()
@@ -51,12 +52,17 @@ void Magic::Renderer::add(Object *a)
     m_objects.push_back(a);
 }
 
+void Magic::Renderer::setCameraRaysNum(size_t a)
+{
+    m_camSamples.resize(a);
+}
+
 void Magic::Renderer::doIt()
 {
     assert(m_buf != nullptr);
     for (size_t i = 0; i < m_bufHeight; i++)
         for (size_t j = 0; j < m_bufWidth; j++)
-            m_buf[j + i * m_bufWidth] = processPixel(m_bufToCam * Vector4{ float(j), float(i) });
+            m_buf[j + i * m_bufWidth] = processPixel(Vector2{ float(j), float(i) });
 }
 
 Magic::Matrix4 Magic::Renderer::transf(const Vector3 &a_from, const Vector3 &a_to, const Vector3 &a_up)
@@ -69,6 +75,13 @@ Magic::Matrix4 Magic::Renderer::transf(const Vector3 &a_from, const Vector3 &a_t
                     l_ya.x, l_ya.y, l_ya.z, -dot(l_ya, a_from),
                     l_za.x, l_za.y, l_za.z, -dot(l_za, a_from),
                     0, 0, 0, 1 };
+}
+
+Magic::ARGB Magic::Renderer::spectrumToRGB(const RGBf &a)
+{
+    return ARGB{ unsigned char(std::nearbyint(255 * a.b)),
+                 unsigned char(std::nearbyint(255 * a.g)),
+                 unsigned char(std::nearbyint(255 * a.r)) };
 }
 
 void Magic::Renderer::calcBufToCam()
@@ -97,14 +110,23 @@ Magic::RGBf Magic::Renderer::ray(const Matrix4 &a_space, const RGBf &a_reflect)
     return ray(l_n1 * a_space, a_reflect * l_o->rgbf());
 }
 
-Magic::ARGB Magic::Renderer::processPixel(const Vector4 &a)
+Magic::RGBf Magic::Renderer::camRay(const Vector3 &a)
 {
     const Vector3 l_from;
     const Vector3 l_to(a.x, a.y, m_camLength);
     const Vector3 l_up(perpendicular(l_to));
     const Matrix4 l_camRay(transf(l_from, l_to, l_up));
-    auto l_rgbf(ray(l_camRay * m_look, RGBf{ 1, 1, 1 }));
-    return ARGB{ unsigned char(std::nearbyint(255 * l_rgbf.b)),
-                 unsigned char(std::nearbyint(255 * l_rgbf.g)),
-                 unsigned char(std::nearbyint(255 * l_rgbf.r)) };
+    return ray(l_camRay * m_look, RGBf{ 1, 1, 1 });
+}
+
+Magic::ARGB Magic::Renderer::processPixel(const Vector3 &a)
+{
+    for (size_t q = 0; q < m_camSamples.size(); q++)
+    {
+        const Vector4 l_shifted(a.x + randF(), a.y + randF());
+        m_camSamples[q] = camRay(m_bufToCam * l_shifted);
+    }
+
+    const auto l_sum = std::accumulate(m_camSamples.begin(), m_camSamples.end(), RGBf());
+    return spectrumToRGB(l_sum / float(m_camSamples.size()));
 }
