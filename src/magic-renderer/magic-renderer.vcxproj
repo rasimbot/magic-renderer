@@ -145,11 +145,13 @@
   <ItemGroup>
     <ClInclude Include="argb.h" />
     <ClInclude Include="ball.h" />
+    <ClInclude Include="defs.h" />
     <ClInclude Include="func.h" />
     <ClInclude Include="matrix4.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="rgbf.h" />
+    <ClInclude Include="sincostab.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="triangle.h" />
     <ClInclude Include="vector2.h" />
@@ -160,6 +162,7 @@
     <ClCompile Include="ball.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="renderer.cpp" />
+    <ClCompile Include="sincostab.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

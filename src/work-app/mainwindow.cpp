@@ -43,11 +43,11 @@ void MainWindow::on_pushButton_do_clicked()
 
     m_r.look(Magic::Vector3(0, 0, 0), Magic::Vector3(0, 0, 10), Magic::Vector3(0, 1, 0));
 
-    auto l_object1(std::make_unique<Magic::Ball>(Magic::Vector3(-1, 0, 6), 0.8, false, Magic::RGBf{ 0.6f, 0.6f, 0.6f }));
+    auto l_object1(std::make_unique<Magic::Ball>(Magic::Vector3(-1, 0, 6), 0.9, false, Magic::RGBf{ 0.95f, 0.95f, 0.95f }));
     m_r.add(l_object1.get());
     m_ball1 = l_object1.release();
 
-    auto l_object2(std::make_unique<Magic::Ball>(Magic::Vector3(1, 0, 6), 0.8, true, Magic::RGBf{ 0.95f, 0.95f, 0.05f }));
+    auto l_object2(std::make_unique<Magic::Ball>(Magic::Vector3(1, 0, 6), 0.9, true, Magic::RGBf{ 0.95f, 0.95f, 0.05f }));
     m_r.add(l_object2.get());
     m_ball2 = l_object2.release();
 
@@ -68,18 +68,19 @@ void MainWindow::on_pushButton_do_clicked()
     auto l_object5(std::make_unique<Magic::Triangle>(Magic::Vector3(2, 2, 4),
                                                      Magic::Vector3(2, 2, 8),
                                                      Magic::Vector3(2, -2, 4),
-                                                     false, Magic::RGBf{ 0.5f, 0.05f, 0.5f }));
+                                                     false, Magic::RGBf{ 0.95f, 0.05f, 0.95f }));
     m_r.add(l_object5.get());
     l_object5.release();
 
     auto l_object6(std::make_unique<Magic::Triangle>(Magic::Vector3(2, -2, 8),
                                                      Magic::Vector3(2, -2, 4),
                                                      Magic::Vector3(2, 2, 8),
-                                                     false, Magic::RGBf{ 0.5f, 0.05f, 0.5f }));
+                                                     false, Magic::RGBf{ 0.95f, 0.05f, 0.95f }));
     m_r.add(l_object6.get());
     l_object6.release();
 
-    m_r.setCameraRaysNum(16);
+    m_r.setCameraRaysNum(128);
+    m_r.setReflRaysNum(32);
     m_r.doIt();
 
     m_i = QImage(reinterpret_cast<const uchar *>(m_r.buf()),

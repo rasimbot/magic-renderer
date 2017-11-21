@@ -22,6 +22,11 @@ namespace Magic
     {
         return RGBf{ o.b / a, o.g / a, o.r / a };
     }
+
+    inline RGBf operator *(float a, const RGBf &o)
+    {
+        return RGBf{ a * o.b, a * o.g, a * o.r };
+    }
 }
 
 #endif // __MAGIC_RENDERER_RGBF_H

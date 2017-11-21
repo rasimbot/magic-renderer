@@ -8,6 +8,7 @@
 #include <list>
 #include "object.h"
 #include <random>
+#include "sincostab.h"
 
 namespace Magic
 {
@@ -31,17 +32,22 @@ namespace Magic
         void add(Object *a);
 
         void setCameraRaysNum(size_t a);
+        void setReflRaysNum(size_t a);
 
         void doIt();
 
         static Matrix4 transf(const Vector3 &a_from, const Vector3 &a_to, const Vector3 &a_up);
 
-        float randF() { return m_randF(m_randGen); }
+        float randCam() { return m_randCam(m_randGenCam); }
+        size_t randRefl1() { return m_randRefl1(m_randGenRefl1); }
+        size_t randRefl2() { return m_randRefl2(m_randGenRefl2); }
+
         static ARGB spectrumToRGB(const RGBf &a);
 
     private:
         void calcBufToCam();
         RGBf ray(const Matrix4 &a_space, const RGBf &a_reflect);
+        RGBf refl(const Matrix4 &a_space, const RGBf &a_reflect);
         RGBf camRay(const Vector3 &a);
         ARGB processPixel(const Vector3 &a);
 
@@ -53,11 +59,16 @@ namespace Magic
 
         std::list<Object *> m_objects;
 
-        std::vector<RGBf> m_camSamples;
+        std::vector<RGBf> m_camSamples, m_reflSamples;
+
+        SinCosTab m_sct;
 
         std::random_device m_randDev;
-        std::mt19937 m_randGen;
-        std::uniform_real_distribution<float> m_randF;
+        std::mt19937 m_randGenCam, m_randGenRefl1, m_randGenRefl2;
+        std::uniform_real_distribution<float> m_randCam;
+        std::uniform_int_distribution<size_t> m_randRefl1, m_randRefl2;
+
+        size_t m_recursion;
     };
 }
 
