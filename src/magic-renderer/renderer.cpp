@@ -54,19 +54,16 @@ void Magic::Renderer::add(Object *a)
     m_objects.push_back(a);
 }
 
-void Magic::Renderer::setCameraRaysNum(size_t a)
+void Magic::Renderer::setRaysNumStrategy(const std::vector<size_t> &a)
 {
-    m_camSamples.resize(a);
-}
-
-void Magic::Renderer::setReflRaysNum(size_t a)
-{
-    m_reflSamples.resize(a);
+    m_samples.resize(a.size());
+    for (size_t i = 0; i < m_samples.size(); i++) m_samples[i].resize(a[i]);
 }
 
 void Magic::Renderer::doIt()
 {
     assert(m_buf != nullptr);
+    m_nowhere = m_success = m_dropped = 0;
     for (size_t i = 0; i < m_bufHeight; i++)
         for (size_t j = 0; j < m_bufWidth; j++)
             m_buf[j + i * m_bufWidth] = processPixel(Vector2{ float(j), float(i) });
@@ -99,8 +96,6 @@ void Magic::Renderer::calcBufToCam()
 
 Magic::RGBf Magic::Renderer::ray(const Matrix4 &a_space, const RGBf &a_reflect)
 {
-    if (m_recursion > 100) return RGBf();
-    m_recursion++;
     Object *l_o = nullptr;
     Matrix4 l_n1;
     float l_z1 = 0;
@@ -112,14 +107,20 @@ Magic::RGBf Magic::Renderer::ray(const Matrix4 &a_space, const RGBf &a_reflect)
         if (!q->hit(a_space, l_n2, l_z2) || l_o != nullptr && l_z1 < l_z2) continue;
         l_o = q; l_n1 = l_n2; l_z1 = l_z2;
     }
-    if (l_o == nullptr) return RGBf();
-    if (l_o->light()) return a_reflect * l_o->rgbf();
-    return refl(l_n1 * a_space, a_reflect * l_o->rgbf());
+    if (l_o == nullptr) { m_nowhere++; return RGBf(); }
+    if (l_o->light()) { m_success++; return a_reflect * l_o->rgbf(); }
+    m_recursion++;
+    if (m_recursion >= m_samples.size()) { m_dropped++; m_recursion--; return RGBf(); }
+    const RGBf l_refl = refl(l_n1 * a_space, a_reflect * l_o->rgbf());
+    m_recursion--;
+    return l_refl;
 }
 
 Magic::RGBf Magic::Renderer::refl(const Matrix4 &a_space, const RGBf &a_reflect)
 {
-    for (size_t q = 0; q < m_reflSamples.size(); q++)
+    assert(m_recursion < m_samples.size());
+    Samples &l_reflSamples = m_samples[m_recursion];
+    for (size_t q = 0; q < l_reflSamples.size(); q++)
     {
         const Vector3 l_from;
         const size_t l_a = randRefl1(), l_b = randRefl2();
@@ -127,10 +128,10 @@ Magic::RGBf Magic::Renderer::refl(const Matrix4 &a_space, const RGBf &a_reflect)
                            m_sct.cos(l_a) * m_sct.cos(l_b), m_sct.sin(l_a));
         const Vector3 l_up(perpendicular(l_to));
         const Matrix4 l_refl(transf(l_from, l_to, l_up));
-        m_reflSamples[q] = ray(l_refl * a_space, a_reflect);
+        l_reflSamples[q] = ray(l_refl * a_space, a_reflect);
     }
-    const auto l_sum(std::accumulate(m_reflSamples.begin(), m_reflSamples.end(), RGBf()));
-    return l_sum / float(m_reflSamples.size());
+    const auto l_sum(std::accumulate(l_reflSamples.begin(), l_reflSamples.end(), RGBf()));
+    return l_sum / float(l_reflSamples.size());
 }
 
 Magic::RGBf Magic::Renderer::camRay(const Vector3 &a)
@@ -145,11 +146,13 @@ Magic::RGBf Magic::Renderer::camRay(const Vector3 &a)
 
 Magic::ARGB Magic::Renderer::processPixel(const Vector3 &a)
 {
-    for (size_t q = 0; q < m_camSamples.size(); q++)
+    assert(m_samples.size() > 0);
+    Samples &l_pixSamples = m_samples[0];
+    for (size_t q = 0; q < l_pixSamples.size(); q++)
     {
         const Vector4 l_shifted(a.x + randCam(), a.y + randCam());
-        m_camSamples[q] = camRay(m_bufToCam * l_shifted);
+        l_pixSamples[q] = camRay(m_bufToCam * l_shifted);
     }
-    const auto l_sum = std::accumulate(m_camSamples.begin(), m_camSamples.end(), RGBf());
-    return spectrumToRGB(l_sum / float(m_camSamples.size()));
+    const auto l_sum = std::accumulate(l_pixSamples.begin(), l_pixSamples.end(), RGBf());
+    return spectrumToRGB(l_sum / float(l_pixSamples.size()));
 }

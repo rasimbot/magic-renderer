@@ -15,6 +15,8 @@ namespace Magic
     class Renderer
     {
     public:
+        typedef std::vector<RGBf> Samples;
+
         Renderer();
         ~Renderer();
 
@@ -31,12 +33,15 @@ namespace Magic
 
         void add(Object *a);
 
-        void setCameraRaysNum(size_t a);
-        void setReflRaysNum(size_t a);
+        void setRaysNumStrategy(const std::vector<size_t> &a);
 
         void doIt();
 
         static Matrix4 transf(const Vector3 &a_from, const Vector3 &a_to, const Vector3 &a_up);
+
+        size_t nowhere() const { return m_nowhere; }
+        size_t success() const { return m_success; }
+        size_t dropped() const { return m_dropped; }
 
         float randCam() { return m_randCam(m_randGenCam); }
         size_t randRefl1() { return m_randRefl1(m_randGenRefl1); }
@@ -59,7 +64,9 @@ namespace Magic
 
         std::list<Object *> m_objects;
 
-        std::vector<RGBf> m_camSamples, m_reflSamples;
+        size_t m_recursion;
+        std::vector<Samples> m_samples;
+        size_t m_nowhere, m_success, m_dropped;
 
         SinCosTab m_sct;
 
@@ -67,8 +74,6 @@ namespace Magic
         std::mt19937 m_randGenCam, m_randGenRefl1, m_randGenRefl2;
         std::uniform_real_distribution<float> m_randCam;
         std::uniform_int_distribution<size_t> m_randRefl1, m_randRefl2;
-
-        size_t m_recursion;
     };
 }
 

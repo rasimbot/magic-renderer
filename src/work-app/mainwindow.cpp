@@ -79,14 +79,18 @@ void MainWindow::on_pushButton_do_clicked()
     m_r.add(l_object6.get());
     l_object6.release();
 
-    m_r.setCameraRaysNum(128);
-    m_r.setReflRaysNum(32);
+    std::vector<size_t> l_strategy{ 64, 32, 16, 8, 4, 2, 1 };
+    m_r.setRaysNumStrategy(l_strategy);
     m_r.doIt();
 
     m_i = QImage(reinterpret_cast<const uchar *>(m_r.buf()),
                     int(m_r.bufWidth()), int(m_r.bufHeight()), QImage::Format_ARGB32);
 
     repaint();
+
+    const QString l_template("nowhere: %1\nsuccess: %2\ndropped: %3\n");
+    const QString l_stat(l_template.arg(m_r.nowhere()).arg(m_r.success()).arg(m_r.dropped()));
+    m_ui->plainTextEdit_log->setPlainText(l_stat);
 }
 
 void MainWindow::on_pushButton_save_clicked()
