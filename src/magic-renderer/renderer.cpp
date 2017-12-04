@@ -96,21 +96,22 @@ void Magic::Renderer::calcBufToCam()
 
 Magic::RGBf Magic::Renderer::ray(const Matrix4 &a_space, const RGBf &a_reflect)
 {
-    ReflArg l_reflArg{ a_space, a_reflect };
+    ReflArg l_reflArg1{ a_space, a_reflect };
     for (auto &q : m_objects)
     {
         assert(q != nullptr);
-        Matrix4 l_normal;
-        float l_depth = 0;
-        if (!q->hit(a_space, l_normal, l_depth) ||
-            l_reflArg.m_object != nullptr && l_reflArg.m_depth < l_depth) continue;
-        l_reflArg.m_object = q; l_reflArg.m_normal = l_normal; l_reflArg.m_depth = l_depth;
+        ReflArg l_reflArg2{ l_reflArg1.m_space };
+        if (!q->hit(l_reflArg2) ||
+            l_reflArg1.m_object != nullptr && l_reflArg1.m_depth < l_reflArg2.m_depth) continue;
+        l_reflArg1.m_object = q;
+        l_reflArg1.m_normal = l_reflArg2.m_normal;
+        l_reflArg1.m_depth = l_reflArg2.m_depth;
     }
-    if (l_reflArg.m_object == nullptr) { m_nowhere++; return RGBf(); }
-    if (l_reflArg.m_object->light()) { m_success++; return a_reflect * l_reflArg.m_object->rgbf(); }
+    if (l_reflArg1.m_object == nullptr) { m_nowhere++; return RGBf(); }
+    if (l_reflArg1.m_object->light()) { m_success++; return a_reflect * l_reflArg1.m_object->rgbf(); }
     m_recursion++;
     if (m_recursion >= m_samples.size()) { m_dropped++; m_recursion--; return RGBf(); }
-    const RGBf l_refl = refl(l_reflArg);
+    const RGBf l_refl = refl(l_reflArg1);
     m_recursion--;
     return l_refl;
 }

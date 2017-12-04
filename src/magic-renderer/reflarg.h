@@ -1,10 +1,10 @@
 #ifndef __MAGIC_RENDERER_REFLARG_H
 #define __MAGIC_RENDERER_REFLARG_H
 
-#include "object.h"
-
 namespace Magic
 {
+    class Object;
+
     struct ReflArg
     {
         Matrix4 m_space;

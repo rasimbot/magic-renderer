@@ -4,6 +4,7 @@
 #include "matrix4.h"
 #include "argb.h"
 #include "rgbf.h"
+#include "reflarg.h"
 
 namespace Magic
 {
@@ -12,9 +13,9 @@ namespace Magic
     public:
         virtual ~Object();
 
-        virtual bool hit(const Matrix4 &a_ray, Matrix4 &a_normal, float &a_depth);
-        virtual bool light() const;
-        virtual RGBf rgbf() const;
+        virtual bool hit(ReflArg &a);
+        virtual bool light();
+        virtual RGBf rgbf();
     };
 }
 

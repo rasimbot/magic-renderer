@@ -9,9 +9,9 @@ Magic::Ball::Ball(const Vector3 &a_p, float a_r, bool a_light, const RGBf &a_rgb
 Magic::Ball::~Ball()
 {}
 
-bool Magic::Ball::hit(const Matrix4 &a_ray, Matrix4 &a_normal, float &a_depth)
+bool Magic::Ball::hit(ReflArg &a)
 {
-    const Vector3 l_inRaySpace(a_ray * m_p);
+    const Vector3 l_inRaySpace(a.m_space * m_p);
     const float l_d = m_r * m_r -
         l_inRaySpace.x * l_inRaySpace.x - l_inRaySpace.y * l_inRaySpace.y;
     if (l_d < 0) return false;
@@ -23,17 +23,17 @@ bool Magic::Ball::hit(const Matrix4 &a_ray, Matrix4 &a_normal, float &a_depth)
     const Vector3 l_zDir(l_from - l_inRaySpace);
     const Vector3 l_to(l_from + l_zDir);
     const Vector3 l_up(perpendicular(l_zDir));
-    a_normal = Renderer::transf(l_from, l_to, l_up);
-    a_depth = l_minZ;
+    a.m_normal = Renderer::transf(l_from, l_to, l_up);
+    a.m_depth = l_minZ;
     return true;
 }
 
-bool Magic::Ball::light() const
+bool Magic::Ball::light()
 {
     return m_light;
 }
 
-Magic::RGBf Magic::Ball::rgbf() const
+Magic::RGBf Magic::Ball::rgbf()
 {
     return m_rgbf;
 }

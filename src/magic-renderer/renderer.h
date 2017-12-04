@@ -9,7 +9,6 @@
 #include "object.h"
 #include <random>
 #include "sincostab.h"
-#include "reflarg.h"
 
 namespace Magic
 {
