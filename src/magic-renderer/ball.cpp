@@ -9,7 +9,7 @@ Magic::Ball::Ball(const Vector3 &a_p, float a_r, bool a_light, const RGBf &a_rgb
 Magic::Ball::~Ball()
 {}
 
-bool Magic::Ball::hit(const Matrix4 &a_ray, Matrix4 &a_normal, float &a_depth) const
+bool Magic::Ball::hit(const Matrix4 &a_ray, Matrix4 &a_normal, float &a_depth)
 {
     const Vector3 l_inRaySpace(a_ray * m_p);
     const float l_d = m_r * m_r -

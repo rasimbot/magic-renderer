@@ -96,30 +96,32 @@ void Magic::Renderer::calcBufToCam()
 
 Magic::RGBf Magic::Renderer::ray(const Matrix4 &a_space, const RGBf &a_reflect)
 {
-    Object *l_o = nullptr;
-    Matrix4 l_n1;
-    float l_z1 = 0;
+    ReflArg l_reflArg{ a_space, a_reflect };
     for (auto &q : m_objects)
     {
         assert(q != nullptr);
-        Matrix4 l_n2;
-        float l_z2 = 0;
-        if (!q->hit(a_space, l_n2, l_z2) || l_o != nullptr && l_z1 < l_z2) continue;
-        l_o = q; l_n1 = l_n2; l_z1 = l_z2;
+        Matrix4 l_normal;
+        float l_depth = 0;
+        if (!q->hit(a_space, l_normal, l_depth) ||
+            l_reflArg.m_object != nullptr && l_reflArg.m_depth < l_depth) continue;
+        l_reflArg.m_object = q; l_reflArg.m_normal = l_normal; l_reflArg.m_depth = l_depth;
     }
-    if (l_o == nullptr) { m_nowhere++; return RGBf(); }
-    if (l_o->light()) { m_success++; return a_reflect * l_o->rgbf(); }
+    if (l_reflArg.m_object == nullptr) { m_nowhere++; return RGBf(); }
+    if (l_reflArg.m_object->light()) { m_success++; return a_reflect * l_reflArg.m_object->rgbf(); }
     m_recursion++;
     if (m_recursion >= m_samples.size()) { m_dropped++; m_recursion--; return RGBf(); }
-    const RGBf l_refl = refl(l_n1 * a_space, a_reflect * l_o->rgbf());
+    const RGBf l_refl = refl(l_reflArg);
     m_recursion--;
     return l_refl;
 }
 
-Magic::RGBf Magic::Renderer::refl(const Matrix4 &a_space, const RGBf &a_reflect)
+Magic::RGBf Magic::Renderer::refl(const ReflArg &a)
 {
+    assert(a.m_object != nullptr);
     assert(m_recursion < m_samples.size());
     Samples &l_reflSamples = m_samples[m_recursion];
+    const Matrix4 l_space(a.m_normal * a.m_space);
+    const RGBf l_reflect(a.m_reflect * a.m_object->rgbf());
     for (size_t q = 0; q < l_reflSamples.size(); q++)
     {
         const Vector3 l_from;
@@ -128,7 +130,7 @@ Magic::RGBf Magic::Renderer::refl(const Matrix4 &a_space, const RGBf &a_reflect)
                            m_sct.cos(l_a) * m_sct.cos(l_b), m_sct.sin(l_a));
         const Vector3 l_up(perpendicular(l_to));
         const Matrix4 l_refl(transf(l_from, l_to, l_up));
-        l_reflSamples[q] = ray(l_refl * a_space, a_reflect);
+        l_reflSamples[q] = ray(l_refl * l_space, l_reflect);
     }
     const auto l_sum(std::accumulate(l_reflSamples.begin(), l_reflSamples.end(), RGBf()));
     return l_sum / float(l_reflSamples.size());

@@ -9,6 +9,7 @@
 #include "object.h"
 #include <random>
 #include "sincostab.h"
+#include "reflarg.h"
 
 namespace Magic
 {
@@ -52,7 +53,7 @@ namespace Magic
     private:
         void calcBufToCam();
         RGBf ray(const Matrix4 &a_space, const RGBf &a_reflect);
-        RGBf refl(const Matrix4 &a_space, const RGBf &a_reflect);
+        RGBf refl(const ReflArg &a);
         RGBf camRay(const Vector3 &a);
         ARGB processPixel(const Vector3 &a);
 

@@ -12,7 +12,7 @@ namespace Magic
                  const Vector3 &a_p3, bool a_light, const RGBf &a_rgbf);
         virtual ~Triangle();
 
-        virtual bool hit(const Matrix4 &a_ray, Matrix4 &a_normal, float &a_depth) const override;
+        virtual bool hit(const Matrix4 &a_ray, Matrix4 &a_normal, float &a_depth) override;
         virtual bool light() const override;
         virtual RGBf rgbf() const override;
 
