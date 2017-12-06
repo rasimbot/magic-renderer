@@ -1,9 +1,6 @@
 #ifndef __MAGIC_RENDERER_OBJECT_H
 #define __MAGIC_RENDERER_OBJECT_H
 
-#include "matrix4.h"
-#include "argb.h"
-#include "rgbf.h"
 #include "rendervar.h"
 
 namespace Magic
@@ -11,7 +8,10 @@ namespace Magic
     class Object
     {
     public:
+        Object();
         virtual ~Object();
+        Object(const Object &) = delete;
+        Object &operator =(const Object &) = delete;
 
         virtual bool hit(RenderVar &a);
         virtual bool light();

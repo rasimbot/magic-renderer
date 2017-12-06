@@ -4,15 +4,14 @@
 #include "sincostab.h"
 
 Magic::Renderer::Renderer() :
-    m_randGenCam(m_randDev()), m_randGenRefl1(m_randDev()), m_randGenRefl2(m_randDev()),
-    m_randCam(-0.5f, 0.5f),
-    m_randRefl1(0, SinCosTab::staticInstance().size() / 4),
-    m_randRefl2(0, SinCosTab::staticInstance().size())
+    m_randGenCam(m_randDev()),
+    m_randCam(-0.5f, 0.5f)
 {}
 
 Magic::Renderer::~Renderer()
 {
     for (auto &q : m_objects) delete q;
+    for (auto &q : m_materials) delete q;
 }
 
 void Magic::Renderer::setBufferSize(size_t a_bufWidth, size_t a_bufHeight)
@@ -56,6 +55,12 @@ void Magic::Renderer::add(Object *a)
     m_objects.push_back(a);
 }
 
+void Magic::Renderer::add(Material *a)
+{
+    assert(a != nullptr);
+    m_materials.push_back(a);
+}
+
 void Magic::Renderer::setRaysNumStrategy(const std::vector<size_t> &a)
 {
     m_samples.resize(a.size());
@@ -89,7 +94,7 @@ Magic::RGBf Magic::Renderer::ray(RenderVar &a)
     for (auto &q : m_objects)
     {
         assert(q != nullptr);
-        RenderVar l_var{ this, a.m_space };
+        RenderVar l_var{ a.m_space };
         if (!q->hit(l_var) || a.m_object != nullptr && a.m_depth < l_var.m_depth) continue;
         a.m_object = q;
         a.m_normal = l_var.m_normal;
@@ -130,7 +135,7 @@ Magic::RGBf Magic::Renderer::refl(RenderVar &a)
         const Vector3 l_up(perpendicular(l_to));
         const Matrix4 l_refl(transf(Vector3(), l_to, l_up));
 
-        RenderVar l_renderVar{ this, l_refl * l_normalInSpace, l_fract * a.m_fractAcc };
+        RenderVar l_renderVar{ l_refl * l_normalInSpace, l_fract * a.m_fractAcc };
         l_reflSamples[q] = ray(l_renderVar);
     }
 
@@ -145,7 +150,7 @@ Magic::RGBf Magic::Renderer::camRay(const Vector3 &a)
     const Vector3 l_up(perpendicular(l_to));
     const Matrix4 l_camRay(transf(l_from, l_to, l_up));
     m_recursion = 0;
-    RenderVar l_renderVar{ this, l_camRay * m_look, RGBf{ 1, 1, 1 } };
+    RenderVar l_renderVar{ l_camRay * m_look, RGBf{ 1, 1, 1 } };
     return ray(l_renderVar);
 }
 

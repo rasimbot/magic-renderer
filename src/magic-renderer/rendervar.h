@@ -1,6 +1,10 @@
 #ifndef __MAGIC_RENDERER_REFLARG_H
 #define __MAGIC_RENDERER_REFLARG_H
 
+#include "rgbf.h"
+#include "vector3.h"
+#include "matrix4.h"
+
 namespace Magic
 {
     class Object;
@@ -8,7 +12,6 @@ namespace Magic
 
     struct RenderVar
     {
-        Renderer *m_renderer = nullptr;
         Matrix4 m_space;
         RGBf m_fractAcc;
         Object *m_object = nullptr;

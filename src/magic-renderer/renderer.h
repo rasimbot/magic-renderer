@@ -2,12 +2,11 @@
 #define __MAGIC_RENDERER_RENDERER_H
 
 #include "argb.h"
-#include "vector3.h"
-#include "matrix4.h"
 #include <vector>
 #include <list>
 #include "object.h"
 #include <random>
+#include "material.h"
 
 namespace Magic
 {
@@ -31,6 +30,7 @@ namespace Magic
         Matrix4 look(const Vector3 &a_from, const Vector3 &a_to, const Vector3 &a_up);
 
         void add(Object *a);
+        void add(Material *a);
 
         void setRaysNumStrategy(const std::vector<size_t> &a);
 
@@ -41,8 +41,6 @@ namespace Magic
         size_t dropped() const { return m_dropped; }
 
         float randCam() { return m_randCam(m_randGenCam); }
-        size_t randRefl1() { return m_randRefl1(m_randGenRefl1); }
-        size_t randRefl2() { return m_randRefl2(m_randGenRefl2); }
 
         static ARGB spectrumToRGB(const RGBf &a);
 
@@ -60,15 +58,15 @@ namespace Magic
         Matrix4 m_bufToCam, m_look;
 
         std::list<Object *> m_objects;
+        std::list<Material *> m_materials;
 
         size_t m_recursion;
         std::vector<Samples> m_samples;
         size_t m_nowhere, m_success, m_dropped;
 
         std::random_device m_randDev;
-        std::mt19937 m_randGenCam, m_randGenRefl1, m_randGenRefl2;
+        std::mt19937 m_randGenCam;
         std::uniform_real_distribution<float> m_randCam;
-        std::uniform_int_distribution<size_t> m_randRefl1, m_randRefl2;
     };
 }
 

@@ -147,6 +147,9 @@
     <ClInclude Include="ball.h" />
     <ClInclude Include="defs.h" />
     <ClInclude Include="func.h" />
+    <ClInclude Include="material.h" />
+    <ClInclude Include="material1.h" />
+    <ClInclude Include="material2.h" />
     <ClInclude Include="matrix4.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="renderer.h" />
@@ -161,6 +164,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ball.cpp" />
+    <ClCompile Include="material.cpp" />
+    <ClCompile Include="material1.cpp" />
+    <ClCompile Include="material2.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="sincostab.cpp" />

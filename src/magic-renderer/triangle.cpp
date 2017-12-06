@@ -5,8 +5,8 @@
 #include "sincostab.h"
 
 Magic::Triangle::Triangle(const Vector3 &a_p1, const Vector3 &a_p2,
-                          const Vector3 &a_p3, bool a_light, const RGBf &a_rgbf) :
-    m_p1(a_p1), m_p2(a_p2), m_p3(a_p3), m_light(a_light), m_rgbf(a_rgbf)
+                          const Vector3 &a_p3, Material *a_material) :
+    m_p1(a_p1), m_p2(a_p2), m_p3(a_p3), m_material(a_material)
 {}
 
 Magic::Triangle::~Triangle()
@@ -29,23 +29,24 @@ bool Magic::Triangle::hit(RenderVar &a)
 
 bool Magic::Triangle::light()
 {
-    return m_light;
+    assert(m_material != nullptr);
+    return m_material->light();
 }
 
 Magic::RGBf Magic::Triangle::lightRgbf()
 {
-    return m_rgbf;
+    assert(m_material != nullptr);
+    return m_material->lightRgbf();
 }
 
 void Magic::Triangle::genRay(RenderVar &a)
 {
-    const size_t l_a = a.m_renderer->randRefl1(), l_b = a.m_renderer->randRefl2();
-    const SinCosTab &l_sct(SinCosTab::staticInstance());
-    a.m_genRay = Vector3(l_sct.cos(l_a) * l_sct.sin(l_b),
-                         l_sct.cos(l_a) * l_sct.cos(l_b), l_sct.sin(l_a));
+    assert(m_material != nullptr);
+    m_material->genRay(a);
 }
 
 Magic::RGBf Magic::Triangle::fract(RenderVar &a)
 {
-    return m_rgbf;
+    assert(m_material != nullptr);
+    return m_material->fract(a);
 }

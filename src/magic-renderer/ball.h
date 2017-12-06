@@ -2,14 +2,14 @@
 #define __MAGIC_RENDERER_BALL_H
 
 #include "object.h"
-#include "vector3.h"
+#include "material.h"
 
 namespace Magic
 {
     class Ball : public Object
     {
     public:
-        Ball(const Vector3 &a_p, float a_r, bool a_light, const RGBf &a_rgbf);
+        Ball(const Vector3 &a_p, float a_r, Material *a_material);
         virtual ~Ball();
 
         virtual bool hit(RenderVar &a) override;
@@ -23,8 +23,7 @@ namespace Magic
     private:
         Vector3 m_p;
         float m_r;
-        bool m_light;
-        RGBf m_rgbf;
+        Material *m_material;
     };
 }
 

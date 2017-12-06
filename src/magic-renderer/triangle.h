@@ -2,6 +2,7 @@
 #define __MAGIC_RENDERER_TRIANGLE_H
 
 #include "object.h"
+#include "material.h"
 
 namespace Magic
 {
@@ -9,7 +10,7 @@ namespace Magic
     {
     public:
         Triangle(const Vector3 &a_p1, const Vector3 &a_p2,
-                 const Vector3 &a_p3, bool a_light, const RGBf &a_rgbf);
+                 const Vector3 &a_p3, Material *a_material);
         virtual ~Triangle();
 
         virtual bool hit(RenderVar &a) override;
@@ -20,8 +21,7 @@ namespace Magic
 
     private:
         Vector3 m_p1, m_p2, m_p3;
-        bool m_light;
-        RGBf m_rgbf;
+        Material *m_material;
     };
 }
 
