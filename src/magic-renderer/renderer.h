@@ -8,7 +8,6 @@
 #include <list>
 #include "object.h"
 #include <random>
-#include "sincostab.h"
 
 namespace Magic
 {
@@ -37,8 +36,6 @@ namespace Magic
 
         void doIt();
 
-        static Matrix4 transf(const Vector3 &a_from, const Vector3 &a_to, const Vector3 &a_up);
-
         size_t nowhere() const { return m_nowhere; }
         size_t success() const { return m_success; }
         size_t dropped() const { return m_dropped; }
@@ -51,8 +48,8 @@ namespace Magic
 
     private:
         void calcBufToCam();
-        RGBf ray(const Matrix4 &a_space, const RGBf &a_reflect);
-        RGBf refl(const ReflArg &a);
+        RGBf ray(RenderVar &a);
+        RGBf refl(RenderVar &a);
         RGBf camRay(const Vector3 &a);
         ARGB processPixel(const Vector3 &a);
 
@@ -67,8 +64,6 @@ namespace Magic
         size_t m_recursion;
         std::vector<Samples> m_samples;
         size_t m_nowhere, m_success, m_dropped;
-
-        SinCosTab m_sct;
 
         std::random_device m_randDev;
         std::mt19937 m_randGenCam, m_randGenRefl1, m_randGenRefl2;

@@ -4,7 +4,7 @@
 #include "matrix4.h"
 #include "argb.h"
 #include "rgbf.h"
-#include "reflarg.h"
+#include "rendervar.h"
 
 namespace Magic
 {
@@ -13,9 +13,11 @@ namespace Magic
     public:
         virtual ~Object();
 
-        virtual bool hit(ReflArg &a);
+        virtual bool hit(RenderVar &a);
         virtual bool light();
-        virtual RGBf rgbf();
+        virtual RGBf lightRgbf();
+        virtual void genRay(RenderVar &a);
+        virtual RGBf fract(RenderVar &a);
     };
 }
 

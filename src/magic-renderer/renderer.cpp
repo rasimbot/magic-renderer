@@ -1,11 +1,13 @@
 #include "stdafx.h"
 #include "renderer.h"
 #include "func.h"
+#include "sincostab.h"
 
 Magic::Renderer::Renderer() :
-    m_sct(4 * 2048),
     m_randGenCam(m_randDev()), m_randGenRefl1(m_randDev()), m_randGenRefl2(m_randDev()),
-    m_randCam(-0.5f, 0.5f), m_randRefl1(0, m_sct.size() / 4), m_randRefl2(0, m_sct.size())
+    m_randCam(-0.5f, 0.5f),
+    m_randRefl1(0, SinCosTab::staticInstance().size() / 4),
+    m_randRefl2(0, SinCosTab::staticInstance().size())
 {}
 
 Magic::Renderer::~Renderer()
@@ -69,18 +71,6 @@ void Magic::Renderer::doIt()
             m_buf[j + i * m_bufWidth] = processPixel(Vector2{ float(j), float(i) });
 }
 
-Magic::Matrix4 Magic::Renderer::transf(const Vector3 &a_from, const Vector3 &a_to, const Vector3 &a_up)
-{
-    //https://msdn.microsoft.com/ru-ru/library/windows/desktop/bb205342(v=vs.85).aspx
-    const Vector3 l_za(normalized(a_to - a_from));
-    const Vector3 l_xa(normalized(cross(a_up, l_za)));
-    const Vector3 l_ya(cross(l_za, l_xa));
-    return Matrix4{ l_xa.x, l_xa.y, l_xa.z, -dot(l_xa, a_from),
-                    l_ya.x, l_ya.y, l_ya.z, -dot(l_ya, a_from),
-                    l_za.x, l_za.y, l_za.z, -dot(l_za, a_from),
-                    0, 0, 0, 1 };
-}
-
 Magic::ARGB Magic::Renderer::spectrumToRGB(const RGBf &a)
 {
     return 250 * a;
@@ -94,45 +84,56 @@ void Magic::Renderer::calcBufToCam()
                           0, 0, 0, 1 };
 }
 
-Magic::RGBf Magic::Renderer::ray(const Matrix4 &a_space, const RGBf &a_reflect)
+Magic::RGBf Magic::Renderer::ray(RenderVar &a)
 {
-    ReflArg l_reflArg1{ a_space, a_reflect };
     for (auto &q : m_objects)
     {
         assert(q != nullptr);
-        ReflArg l_reflArg2{ l_reflArg1.m_space };
-        if (!q->hit(l_reflArg2) ||
-            l_reflArg1.m_object != nullptr && l_reflArg1.m_depth < l_reflArg2.m_depth) continue;
-        l_reflArg1.m_object = q;
-        l_reflArg1.m_normal = l_reflArg2.m_normal;
-        l_reflArg1.m_depth = l_reflArg2.m_depth;
+        RenderVar l_var{ this, a.m_space };
+        if (!q->hit(l_var) || a.m_object != nullptr && a.m_depth < l_var.m_depth) continue;
+        a.m_object = q;
+        a.m_normal = l_var.m_normal;
+        a.m_depth = l_var.m_depth;
     }
-    if (l_reflArg1.m_object == nullptr) { m_nowhere++; return RGBf(); }
-    if (l_reflArg1.m_object->light()) { m_success++; return a_reflect * l_reflArg1.m_object->rgbf(); }
+
+    if (a.m_object == nullptr) { m_nowhere++; return RGBf(); }
+    if (a.m_object->light()) { m_success++; return a.m_fractAcc * a.m_object->lightRgbf(); }
+
     m_recursion++;
     if (m_recursion >= m_samples.size()) { m_dropped++; m_recursion--; return RGBf(); }
-    const RGBf l_refl = refl(l_reflArg1);
+
+    const Vector3 l_back(a.m_normal * Vector3(0, 0, 2 * a.m_depth));
+    const Vector3 l_face(l_back.x, l_back.y, -l_back.z);
+    const Vector3 l_up(perpendicular(l_face));
+    a.m_bounce = transf(Vector3(), l_face, l_up);
+
+    const RGBf l_refl = refl(a);
+
     m_recursion--;
     return l_refl;
 }
 
-Magic::RGBf Magic::Renderer::refl(const ReflArg &a)
+Magic::RGBf Magic::Renderer::refl(RenderVar &a)
 {
     assert(a.m_object != nullptr);
     assert(m_recursion < m_samples.size());
     Samples &l_reflSamples = m_samples[m_recursion];
-    const Matrix4 l_space(a.m_normal * a.m_space);
-    const RGBf l_reflect(a.m_reflect * a.m_object->rgbf());
+
+    const Matrix4 l_normalInSpace(a.m_normal * a.m_space);
+
     for (size_t q = 0; q < l_reflSamples.size(); q++)
     {
-        const Vector3 l_from;
-        const size_t l_a = randRefl1(), l_b = randRefl2();
-        const Vector3 l_to(m_sct.cos(l_a) * m_sct.sin(l_b),
-                           m_sct.cos(l_a) * m_sct.cos(l_b), m_sct.sin(l_a));
+        a.m_object->genRay(a);
+        const RGBf l_fract(a.m_object->fract(a));
+
+        const Vector3 l_to(a.m_genRay);
         const Vector3 l_up(perpendicular(l_to));
-        const Matrix4 l_refl(transf(l_from, l_to, l_up));
-        l_reflSamples[q] = ray(l_refl * l_space, l_reflect);
+        const Matrix4 l_refl(transf(Vector3(), l_to, l_up));
+
+        RenderVar l_renderVar{ this, l_refl * l_normalInSpace, l_fract * a.m_fractAcc };
+        l_reflSamples[q] = ray(l_renderVar);
     }
+
     const auto l_sum(std::accumulate(l_reflSamples.begin(), l_reflSamples.end(), RGBf()));
     return l_sum / float(l_reflSamples.size());
 }
@@ -144,7 +145,8 @@ Magic::RGBf Magic::Renderer::camRay(const Vector3 &a)
     const Vector3 l_up(perpendicular(l_to));
     const Matrix4 l_camRay(transf(l_from, l_to, l_up));
     m_recursion = 0;
-    return ray(l_camRay * m_look, RGBf{ 1, 1, 1 });
+    RenderVar l_renderVar{ this, l_camRay * m_look, RGBf{ 1, 1, 1 } };
+    return ray(l_renderVar);
 }
 
 Magic::ARGB Magic::Renderer::processPixel(const Vector3 &a)

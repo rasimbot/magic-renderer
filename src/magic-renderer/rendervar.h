@@ -4,14 +4,18 @@
 namespace Magic
 {
     class Object;
+    class Renderer;
 
-    struct ReflArg
+    struct RenderVar
     {
+        Renderer *m_renderer = nullptr;
         Matrix4 m_space;
-        RGBf m_reflect;
+        RGBf m_fractAcc;
         Object *m_object = nullptr;
         Matrix4 m_normal;
         float m_depth = 0;
+        Matrix4 m_bounce;
+        Vector3 m_genRay;
     };
 }
 

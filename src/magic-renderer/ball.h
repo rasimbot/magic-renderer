@@ -12,9 +12,11 @@ namespace Magic
         Ball(const Vector3 &a_p, float a_r, bool a_light, const RGBf &a_rgbf);
         virtual ~Ball();
 
-        virtual bool hit(ReflArg &a) override;
+        virtual bool hit(RenderVar &a) override;
         virtual bool light() override;
-        virtual RGBf rgbf() override;
+        virtual RGBf lightRgbf() override;
+        virtual void genRay(RenderVar &a) override;
+        virtual RGBf fract(RenderVar &a) override;
 
         void set(const Vector3 &a_p);
 

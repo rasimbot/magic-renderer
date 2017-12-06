@@ -25,6 +25,8 @@ namespace Magic
         size_t size() const { assert(m_sin.size() == m_cos.size()); return m_sin.size(); }
 
         std::vector<float> m_sin, m_cos;
+
+        static SinCosTab &staticInstance();
     };
 }
 

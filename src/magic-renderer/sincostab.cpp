@@ -13,3 +13,9 @@ Magic::SinCosTab::SinCosTab(size_t a_tabSize) :
         m_cos[i] = float(std::cos(l_a));
     }
 }
+
+Magic::SinCosTab &Magic::SinCosTab::staticInstance()
+{
+    static SinCosTab s_sinCosTab(4 * 2048);
+    return s_sinCosTab;
+}

@@ -57,7 +57,7 @@
     <ClInclude Include="defs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="reflarg.h">
+    <ClInclude Include="rendervar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

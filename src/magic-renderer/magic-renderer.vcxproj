@@ -149,8 +149,8 @@
     <ClInclude Include="func.h" />
     <ClInclude Include="matrix4.h" />
     <ClInclude Include="object.h" />
-    <ClInclude Include="reflarg.h" />
     <ClInclude Include="renderer.h" />
+    <ClInclude Include="rendervar.h" />
     <ClInclude Include="rgbf.h" />
     <ClInclude Include="sincostab.h" />
     <ClInclude Include="stdafx.h" />
