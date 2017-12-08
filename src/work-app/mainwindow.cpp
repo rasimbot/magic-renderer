@@ -106,8 +106,8 @@ void MainWindow::on_pushButton_do_clicked()
 
     repaint();
 
-    const QString l_template("nowhere: %1\nsuccess: %2\ndropped: %3\n");
-    const QString l_stat(l_template.arg(m_r.nowhere()).arg(m_r.success()).arg(m_r.dropped()));
+    const QString l_template("hit: %1\nmisses: %2\ndropped: %3\n");
+    const QString l_stat(l_template.arg(m_r.hit()).arg(m_r.misses()).arg(m_r.dropped()));
     m_ui->plainTextEdit_log->setPlainText(l_stat);
 }
 

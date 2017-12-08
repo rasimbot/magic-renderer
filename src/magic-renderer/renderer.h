@@ -36,8 +36,8 @@ namespace Magic
 
         void doIt();
 
-        size_t nowhere() const { return m_nowhere; }
-        size_t success() const { return m_success; }
+        size_t hit() const { return m_hit; }
+        size_t misses() const { return m_misses; }
         size_t dropped() const { return m_dropped; }
 
         float randCam() { return m_randCam(m_randGenCam); }
@@ -46,10 +46,10 @@ namespace Magic
 
     private:
         void calcBufToCam();
-        RGBf ray(RenderVar &a);
-        RGBf refl(RenderVar &a);
-        RGBf camRay(const Vector3 &a);
-        ARGB processPixel(const Vector3 &a);
+        bool ray(RenderVar &a);
+        bool refl(RenderVar &a);
+        bool camRay(const Vector3 &a_dir, RGBf &a_spectrum);
+        bool processPixel(const Vector3 &a_dir, ARGB &a_color);
 
         size_t m_bufWidth = 0, m_bufHeight = 0;
         ARGB *m_buf = nullptr;
@@ -62,7 +62,7 @@ namespace Magic
 
         size_t m_recursion;
         std::vector<Samples> m_samples;
-        size_t m_nowhere, m_success, m_dropped;
+        size_t m_hit, m_misses, m_dropped;
 
         std::random_device m_randDev;
         std::mt19937 m_randGenCam;

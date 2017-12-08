@@ -13,7 +13,7 @@ namespace Magic
     struct RenderVar
     {
         Matrix4 m_space;
-        RGBf m_fractAcc;
+        RGBf m_spectrum;
         Object *m_object = nullptr;
         Matrix4 m_normal;
         float m_depth = 0;
