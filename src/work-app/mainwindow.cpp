@@ -45,7 +45,7 @@ void MainWindow::on_pushButton_do_clicked()
 
     m_r.look(Magic::Vector3(0, 0, 0), Magic::Vector3(0, 0, 10), Magic::Vector3(0, 1, 0));
 
-    auto l_material1(std::make_unique<Magic::Material1>(Magic::RGBf{ 0.95f, 0.95f, 0.05f }));
+    auto l_material1(std::make_unique<Magic::Material1>(Magic::RGBf{ 0.8f, 0.98f, 0.98f }));
     m_r.add(l_material1.get());
     auto l_rpMaterial1 = l_material1.release();
 
@@ -53,33 +53,33 @@ void MainWindow::on_pushButton_do_clicked()
     m_r.add(l_material2.get());
     auto l_rpMaterial2 = l_material2.release();
 
-    auto l_object1(std::make_unique<Magic::Ball>(Magic::Vector3(-1, 0, 6), 0.9, l_rpMaterial2));
+    auto l_object1(std::make_unique<Magic::Ball>(Magic::Vector3(-1, 0, 6), 0.8, l_rpMaterial1));
     m_r.add(l_object1.get());
     m_ball1 = l_object1.release();
 
-    auto l_object2(std::make_unique<Magic::Ball>(Magic::Vector3(1, 0, 6), 0.9, l_rpMaterial1));
+    auto l_object2(std::make_unique<Magic::Ball>(Magic::Vector3(1, 0, 6), 0.8, l_rpMaterial2));
     m_r.add(l_object2.get());
     m_ball2 = l_object2.release();
 
-    auto l_material3(std::make_unique<Magic::Material1>(Magic::RGBf{ 0.05f, 0.95f, 0.95f }));
+    auto l_material3(std::make_unique<Magic::Material1>(Magic::RGBf{ 0.98f, 0.98f, 0.8f }));
     m_r.add(l_material3.get());
     auto l_rpMaterial3 = l_material3.release();
 
-    auto l_material4(std::make_unique<Magic::Material2>(Magic::RGBf{ 0.95f, 0.05f, 0.95f }));
+    auto l_material4(std::make_unique<Magic::Material2>(Magic::RGBf{ 0.25f, 0.5f, 0.5f }));
     m_r.add(l_material4.get());
     auto l_rpMaterial4 = l_material4.release();
 
     auto l_object3(std::make_unique<Magic::Triangle>(Magic::Vector3(-2, -2, 4),
                                                      Magic::Vector3(-2, 2, 8),
                                                      Magic::Vector3(-2, 2, 4),
-                                                     l_rpMaterial3));
+                                                     l_rpMaterial4));
     m_r.add(l_object3.get());
     l_object3.release();
 
     auto l_object4(std::make_unique<Magic::Triangle>(Magic::Vector3(-2, -2, 4),
                                                      Magic::Vector3(-2, -2, 8),
                                                      Magic::Vector3(-2, 2, 8),
-                                                     l_rpMaterial3));
+                                                     l_rpMaterial4));
     m_r.add(l_object4.get());
     l_object4.release();
 
@@ -97,7 +97,39 @@ void MainWindow::on_pushButton_do_clicked()
     m_r.add(l_object6.get());
     l_object6.release();
 
-    std::vector<size_t> l_strategy{ 64, 32, 16, 8, 4, 2, 1 };
+    auto l_object7(std::make_unique<Magic::Triangle>(Magic::Vector3(2, 2, 4),
+                                                     Magic::Vector3(-2, 2, 4),
+                                                     Magic::Vector3(-2, 2, 8),
+                                                     l_rpMaterial3));
+    m_r.add(l_object7.get());
+    l_object7.release();
+
+    auto l_object8(std::make_unique<Magic::Triangle>(Magic::Vector3(2, 2, 4),
+                                                     Magic::Vector3(-2, 2, 8),
+                                                     Magic::Vector3(2, 2, 8),
+                                                     l_rpMaterial3));
+    m_r.add(l_object8.get());
+    l_object8.release();
+
+    auto l_material5(std::make_unique<Magic::Material2>(Magic::RGBf{ 0.05f, 0.05f, 0.5f }));
+    m_r.add(l_material5.get());
+    auto l_rpMaterial5 = l_material5.release();
+
+    auto l_object9(std::make_unique<Magic::Triangle>(Magic::Vector3(2, -2, 4),
+                                                     Magic::Vector3(2, -2, 8),
+                                                     Magic::Vector3(-2, -2, 4),
+                                                     l_rpMaterial5));
+    m_r.add(l_object9.get());
+    l_object9.release();
+
+    auto l_object10(std::make_unique<Magic::Triangle>(Magic::Vector3(2, -2, 8),
+                                                     Magic::Vector3(-2, -2, 8),
+                                                     Magic::Vector3(-2, -2, 4),
+                                                     l_rpMaterial5));
+    m_r.add(l_object10.get());
+    l_object10.release();
+
+    std::vector<size_t> l_strategy{ 48, 24, 12, 6, 3 };
     m_r.setRaysNumStrategy(l_strategy);
     m_r.doIt();
 

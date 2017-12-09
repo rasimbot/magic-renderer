@@ -78,7 +78,7 @@ void Magic::Renderer::doIt()
 
 Magic::ARGB Magic::Renderer::spectrumToRGB(const RGBf &a)
 {
-    return 250 * a;
+    return 255 * a;
 }
 
 void Magic::Renderer::calcBufToCam()
@@ -142,7 +142,7 @@ bool Magic::Renderer::refl(RenderVar &a)
     if (g < 1) return false;
 
     const auto l_sum(std::accumulate(l_reflSamples.begin(), l_reflSamples.begin() + g, RGBf()));
-    a.m_spectrum = l_sum / float(l_reflSamples.size());
+    a.m_spectrum = l_sum / float(g);
     return true;
 }
 
@@ -174,6 +174,6 @@ bool Magic::Renderer::processPixel(const Vector3 &a_dir, ARGB &a_color)
     if (g < 1) return false;
 
     const auto l_sum = std::accumulate(l_pixSamples.begin(), l_pixSamples.begin() + g, RGBf());
-    a_color = spectrumToRGB(l_sum / float(l_pixSamples.size()));
+    a_color = spectrumToRGB(l_sum / float(g));
     return true;
 }
