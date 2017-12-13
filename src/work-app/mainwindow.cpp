@@ -10,6 +10,8 @@
 #include <QtGui/QMatrix4x4>
 #include <material1.h>
 #include <material2.h>
+#include <checkermaterial.h>
+#include <array>
 
 MainWindow::MainWindow(QWidget *a_parent) :
     QWidget(a_parent),
@@ -61,71 +63,58 @@ void MainWindow::on_pushButton_do_clicked()
     m_r.add(l_object2.get());
     m_ball2 = l_object2.release();
 
-    auto l_material3(std::make_unique<Magic::Material1>(Magic::RGBf{ 0.98f, 0.98f, 0.8f }));
+    auto l_material3(std::make_unique<Magic::Material2>(Magic::RGBf{ 0.25f, 0.6f, 0.6f }));
     m_r.add(l_material3.get());
     auto l_rpMaterial3 = l_material3.release();
 
-    auto l_material4(std::make_unique<Magic::Material2>(Magic::RGBf{ 0.25f, 0.5f, 0.5f }));
-    m_r.add(l_material4.get());
-    auto l_rpMaterial4 = l_material4.release();
-
-    auto l_object3(std::make_unique<Magic::Triangle>(Magic::Vector3(-2, -2, 4),
-                                                     Magic::Vector3(-2, 2, 8),
-                                                     Magic::Vector3(-2, 2, 4),
-                                                     l_rpMaterial4));
+    const Magic::V3Triple l_inWorld3{ Magic::Vector3(-2, -2, 4), Magic::Vector3(-2, -2, 8), Magic::Vector3(-2, 2, 8) };
+    auto l_object3(std::make_unique<Magic::Triangle>(l_inWorld3, l_rpMaterial3, Magic::V2Triple()));
     m_r.add(l_object3.get());
     l_object3.release();
 
-    auto l_object4(std::make_unique<Magic::Triangle>(Magic::Vector3(-2, -2, 4),
-                                                     Magic::Vector3(-2, -2, 8),
-                                                     Magic::Vector3(-2, 2, 8),
-                                                     l_rpMaterial4));
+    const Magic::V3Triple l_inWorld4{ Magic::Vector3(-2, -2, 4), Magic::Vector3(-2, 2, 8), Magic::Vector3(-2, 2, 4) };
+    auto l_object4(std::make_unique<Magic::Triangle>(l_inWorld4, l_rpMaterial3, Magic::V2Triple()));
     m_r.add(l_object4.get());
     l_object4.release();
 
-    auto l_object5(std::make_unique<Magic::Triangle>(Magic::Vector3(2, 2, 4),
-                                                     Magic::Vector3(2, 2, 8),
-                                                     Magic::Vector3(2, -2, 4),
-                                                     l_rpMaterial4));
+    const Magic::V3Triple l_inWorld5{ Magic::Vector3(2, -2, 4), Magic::Vector3(2, 2, 4), Magic::Vector3(2, 2, 8) };
+    auto l_object5(std::make_unique<Magic::Triangle>(l_inWorld5, l_rpMaterial3, Magic::V2Triple()));
     m_r.add(l_object5.get());
     l_object5.release();
 
-    auto l_object6(std::make_unique<Magic::Triangle>(Magic::Vector3(2, -2, 8),
-                                                     Magic::Vector3(2, -2, 4),
-                                                     Magic::Vector3(2, 2, 8),
-                                                     l_rpMaterial4));
+    const Magic::V3Triple l_inWorld6{ Magic::Vector3(2, -2, 4), Magic::Vector3(2, 2, 8), Magic::Vector3(2, -2, 8) };
+    auto l_object6(std::make_unique<Magic::Triangle>(l_inWorld6, l_rpMaterial3, Magic::V2Triple()));
     m_r.add(l_object6.get());
     l_object6.release();
 
-    auto l_object7(std::make_unique<Magic::Triangle>(Magic::Vector3(2, 2, 4),
-                                                     Magic::Vector3(-2, 2, 4),
-                                                     Magic::Vector3(-2, 2, 8),
-                                                     l_rpMaterial3));
+    auto l_material4(std::make_unique<Magic::Material1>(Magic::RGBf{ 0.98f, 0.98f, 0.8f }));
+    m_r.add(l_material4.get());
+    auto l_rpMaterial4 = l_material4.release();
+
+    const Magic::V3Triple l_inWorld7{ Magic::Vector3(2, 2, 4), Magic::Vector3(-2, 2, 4), Magic::Vector3(-2, 2, 8) };
+    auto l_object7(std::make_unique<Magic::Triangle>(l_inWorld7, l_rpMaterial4, Magic::V2Triple()));
     m_r.add(l_object7.get());
     l_object7.release();
 
-    auto l_object8(std::make_unique<Magic::Triangle>(Magic::Vector3(2, 2, 4),
-                                                     Magic::Vector3(-2, 2, 8),
-                                                     Magic::Vector3(2, 2, 8),
-                                                     l_rpMaterial3));
+    const Magic::V3Triple l_inWorld8{ Magic::Vector3(2, 2, 4), Magic::Vector3(-2, 2, 8), Magic::Vector3(2, 2, 8) };
+    auto l_object8(std::make_unique<Magic::Triangle>(l_inWorld8, l_rpMaterial4, Magic::V2Triple()));
     m_r.add(l_object8.get());
     l_object8.release();
 
-    auto l_material5(std::make_unique<Magic::Material2>(Magic::RGBf{ 0.05f, 0.05f, 0.5f }));
+    auto l_material5(std::make_unique<Magic::CheckerMaterial>(Magic::RGBf{ 0.1f, 0.1f, 0.6f },
+                                                              Magic::RGBf{ 0.6f, 0.1f, 0.1f }));
     m_r.add(l_material5.get());
     auto l_rpMaterial5 = l_material5.release();
 
-    auto l_object9(std::make_unique<Magic::Triangle>(Magic::Vector3(2, -2, 4),
-                                                     Magic::Vector3(2, -2, 8),
-                                                     Magic::Vector3(-2, -2, 4),
-                                                     l_rpMaterial5));
+    const Magic::V3Triple l_inWorld9{ Magic::Vector3(-2, -2, 4), Magic::Vector3(2, -2, 4), Magic::Vector3(2, -2, 8) };
+    const Magic::V2Triple l_inMaterial9{ Magic::Vector2{ 0, 0 }, Magic::Vector2{ 10, 0 }, Magic::Vector2{ 10, 10 } };
+    auto l_object9(std::make_unique<Magic::Triangle>(l_inWorld9, l_rpMaterial5, l_inMaterial9));
     m_r.add(l_object9.get());
     l_object9.release();
 
-    auto l_object10(std::make_unique<Magic::Triangle>(Magic::Vector3(2, -2, 8),
-                                                     Magic::Vector3(-2, -2, 8),
-                                                     Magic::Vector3(-2, -2, 4),
-                                                     l_rpMaterial5));
+    const Magic::V3Triple l_inWorld10{ Magic::Vector3(-2, -2, 4), Magic::Vector3(2, -2, 8), Magic::Vector3(-2, -2, 8) };
+    const Magic::V2Triple l_inMaterial10{ Magic::Vector2{ 0, 0 }, Magic::Vector2{ 10, 10 }, Magic::Vector2{ 0, 10 } };
+    auto l_object10(std::make_unique<Magic::Triangle>(l_inWorld10, l_rpMaterial5, l_inMaterial10));
     m_r.add(l_object10.get());
     l_object10.release();
 

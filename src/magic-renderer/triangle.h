@@ -3,14 +3,17 @@
 
 #include "object.h"
 #include "material.h"
+#include <array>
 
 namespace Magic
 {
+    typedef std::array<Vector2, 3> V2Triple;
+    typedef std::array<Vector3, 3> V3Triple;
+
     class Triangle : public Object
     {
     public:
-        Triangle(const Vector3 &a_p1, const Vector3 &a_p2,
-                 const Vector3 &a_p3, Material *a_material);
+        Triangle(const V3Triple &a_inWorld, Material *a_material, const V2Triple &a_inMaterial);
         virtual ~Triangle();
 
         virtual bool hit(RenderVar &a) override;
@@ -20,8 +23,9 @@ namespace Magic
         virtual RGBf fract(RenderVar &a) override;
 
     private:
-        Vector3 m_p1, m_p2, m_p3;
+        V3Triple m_w;
         Material *m_material;
+        Matrix4 m_p2m;
     };
 }
 

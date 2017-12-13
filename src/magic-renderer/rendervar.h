@@ -17,6 +17,7 @@ namespace Magic
         Object *m_object = nullptr;
         Matrix4 m_normal;
         float m_depth = 0;
+        Vector2 m_surface;
         Matrix4 m_bounce;
         Vector3 m_genRay;
     };

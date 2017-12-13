@@ -96,9 +96,8 @@ bool Magic::Renderer::ray(RenderVar &a)
         assert(q != nullptr);
         RenderVar l_var{ a.m_space };
         if (!q->hit(l_var) || a.m_object != nullptr && a.m_depth < l_var.m_depth) continue;
-        a.m_object = q;
-        a.m_normal = l_var.m_normal;
-        a.m_depth = l_var.m_depth;
+        a.m_object = q; a.m_normal = l_var.m_normal;
+        a.m_depth = l_var.m_depth; a.m_surface = l_var.m_surface;
     }
 
     if (a.m_object == nullptr) { m_misses++; return true; }

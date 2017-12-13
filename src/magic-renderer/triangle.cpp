@@ -4,26 +4,42 @@
 #include "func.h"
 #include "sincostab.h"
 
-Magic::Triangle::Triangle(const Vector3 &a_p1, const Vector3 &a_p2,
-                          const Vector3 &a_p3, Material *a_material) :
-    m_p1(a_p1), m_p2(a_p2), m_p3(a_p3), m_material(a_material)
-{}
+Magic::Triangle::Triangle(const V3Triple &a_inWorld,
+                          Material *a_material, const V2Triple &a_inMaterial) :
+    m_w(a_inWorld), m_material(a_material)
+{
+    assert(m_material != nullptr);
+    if (a_inMaterial.empty()) return;
+    const Vector3 l_mV1(a_inMaterial[1] - a_inMaterial[0], 0);
+    const Vector3 l_mFrom(a_inMaterial[0], 0);
+    const Vector3 l_mTo(a_inMaterial[0], 1);
+    const Vector3 l_mUp(cross(Vector3(0, 0, 1), l_mV1));
+    const Matrix4 l_m2t(transf(l_mFrom, l_mTo, l_mUp));
+    const Vector3 l_t2(l_m2t * Vector3(a_inMaterial[1], 0)), l_t3(l_m2t * Vector3(a_inMaterial[2], 0));
+    const Vector3 l_up2(cross(Vector3(0, 0, 1), Vector3(l_mV1.x, -l_mV1.y)));
+    const Matrix4 l_t2pm(transf(Vector3(), Vector3(0, 0, 1), l_up2));
+    m_p2m = translate(Vector3(a_inMaterial[0], 0)) * l_t2pm * scale(Vector3(l_t2.x, l_t3.y));
+}
 
 Magic::Triangle::~Triangle()
 {}
 
 bool Magic::Triangle::hit(RenderVar &a)
 {
-    const Vector3 l_rs1(a.m_space * m_p1), l_rs2(a.m_space * m_p2), l_rs3(a.m_space * m_p3);
-    if (!isPointInTriangle(Vector2(), l_rs1, l_rs2, l_rs3)) return false;
-    const Vector3 l_n(cross(l_rs2 - l_rs1, l_rs3 - l_rs2));
-    const float l_z = (l_n.x * l_rs2.x + l_n.y * l_rs2.y + l_n.z * l_rs2.z) / l_n.z;
+    const Vector3 l_r1(a.m_space * m_w[0]), l_r2(a.m_space * m_w[1]), l_r3(a.m_space * m_w[2]);
+    if (!isPointInTriangle(Vector2(), l_r1, l_r2, l_r3)) return false;
+    const Vector3 l_v1(l_r2 - l_r1), l_v2(l_r3 - l_r1);
+    const Vector3 l_n(cross(l_v1, l_v2));
+    const float l_z = (l_n.x * l_r2.x + l_n.y * l_r2.y + l_n.z * l_r2.z) / l_n.z;
     if (l_z < 0) return false;
-    const Vector3 l_from(0, 0, l_z);
-    const Vector3 l_to(l_from - l_n);
-    const Vector3 l_up(perpendicular(-l_n));
-    a.m_normal = transf(l_from, l_to, l_up);
+    const Vector3 l_from1(0, 0, l_z), l_to1(l_from1 - l_n), l_up1(perpendicular(-l_n));
+    a.m_normal = transf(l_from1, l_to1, l_up1);
     a.m_depth = l_z;
+    const Vector3 l_to2(l_r1 + l_n), l_up2(cross(l_n, l_v1));
+    const Matrix4 l_r2t(transf(l_r1, l_to2, l_up2));
+    const Vector3 l_t2(l_r2t * l_r2), l_t3(l_r2t * l_r3);
+    const Vector3 l_tHit(l_r2t * l_from1), l_proportional(l_tHit.x / l_t2.x, l_tHit.y / l_t3.y);
+    a.m_surface = Vector3(m_p2m * l_proportional);
     return true;
 }
 

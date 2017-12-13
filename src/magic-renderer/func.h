@@ -32,6 +32,32 @@ namespace Magic
                         l_za.x, l_za.y, l_za.z, -dot(l_za, a_from),
                         0, 0, 0, 1 };
     }
+
+    inline Matrix4 translate(const Vector3 &a)
+    {
+        return Matrix4{ 1, 0, 0, a.x,
+                        0, 1, 0, a.y,
+                        0, 0, 1, a.z,
+                        0, 0, 0, 1 };
+    }
+
+    inline Matrix4 rotateXY(const Vector3 &a)
+    {
+        const float l_length = length(a);
+        const float l_sin = a.y / l_length, l_cos = a.x / l_length;
+        return Matrix4{ l_cos, -l_sin, 0, 0,
+                        l_sin, l_cos, 0, 0,
+                        0, 0, 1, 0,
+                        0, 0, 0, 1 };
+    }
+
+    inline Matrix4 scale(const Vector3 &a)
+    {
+        return Matrix4{ a.x, 0, 0, 0,
+                        0, a.y, 0, 0,
+                        0, 0, a.z, 0,
+                        0, 0, 0, 1 };
+    }
 }
 
 #endif // __MAGIC_RENDERER_FUNC_H
