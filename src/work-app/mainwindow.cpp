@@ -11,6 +11,7 @@
 #include <material1.h>
 #include <material2.h>
 #include <checkermaterial.h>
+#include <shinymaterial.h>
 #include <array>
 
 MainWindow::MainWindow(QWidget *a_parent) :
@@ -51,7 +52,7 @@ void MainWindow::on_pushButton_do_clicked()
     m_r.add(l_material1.get());
     auto l_rpMaterial1 = l_material1.release();
 
-    auto l_material2(std::make_unique<Magic::Material2>(Magic::RGBf{ 0.95f, 0.95f, 0.95f }));
+    auto l_material2(std::make_unique<Magic::ShinyMaterial>(Magic::RGBf{ 0.95f, 0.95f, 0.95f }));
     m_r.add(l_material2.get());
     auto l_rpMaterial2 = l_material2.release();
 
@@ -118,7 +119,7 @@ void MainWindow::on_pushButton_do_clicked()
     m_r.add(l_object10.get());
     l_object10.release();
 
-    std::vector<size_t> l_strategy{ 48, 24, 12, 6, 3 };
+    std::vector<size_t> l_strategy{ 40, 15, 6, 3 };
     m_r.setRaysNumStrategy(l_strategy);
     m_r.doIt();
 

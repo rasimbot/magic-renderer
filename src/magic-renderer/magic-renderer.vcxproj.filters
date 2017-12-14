@@ -72,6 +72,9 @@
     <ClInclude Include="checkermaterial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="shinymaterial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -102,6 +105,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="checkermaterial.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shinymaterial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

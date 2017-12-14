@@ -51,6 +51,16 @@ namespace Magic
                         0, 0, 0, 1 };
     }
 
+    inline Matrix4 rotateYZ(const Vector3 &a)
+    {
+        const float l_length = length(a);
+        const float l_sin = a.z / l_length, l_cos = a.y / l_length;
+        return Matrix4{ 1, 0, 0, 0,
+                        0, l_cos, -l_sin, 0,
+                        0, l_sin, l_cos, 0,
+                        0, 0, 0, 1 };
+    }
+
     inline Matrix4 scale(const Vector3 &a)
     {
         return Matrix4{ a.x, 0, 0, 0,

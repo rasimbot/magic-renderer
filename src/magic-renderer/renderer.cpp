@@ -107,8 +107,12 @@ bool Magic::Renderer::ray(RenderVar &a)
 
     const Vector3 l_back(a.m_normal * Vector3(0, 0, 2 * a.m_depth));
     const Vector3 l_face(l_back.x, l_back.y, -l_back.z);
-    const Vector3 l_up(perpendicular(l_face));
-    a.m_bounce = transf(Vector3(), l_face, l_up);
+    const float l_xypl = std::sqrt(l_face.x * l_face.x + l_face.y * l_face.y);
+    const Vector3 l_vYZ(0, l_face.z, -l_xypl);
+    const Matrix4 l_mYZ(rotateYZ(l_vYZ));
+    const Vector3 l_vXY(l_face.y, -l_face.x, 0);
+    const Matrix4 l_mXY(rotateXY(l_vXY));
+    a.m_bounce = l_mXY * l_mYZ;
 
     m_recursion++;
     const bool r = refl(a);
@@ -128,6 +132,7 @@ bool Magic::Renderer::refl(RenderVar &a)
     for (size_t q = 0; q < l_reflSamples.size(); q++)
     {
         a.m_object->genRay(a);
+        if (a.m_genRay.z < 0) continue;
         const RGBf l_fract(a.m_object->fract(a));
 
         const Vector3 l_to(a.m_genRay);

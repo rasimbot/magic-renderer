@@ -156,6 +156,7 @@
     <ClInclude Include="renderer.h" />
     <ClInclude Include="rendervar.h" />
     <ClInclude Include="rgbf.h" />
+    <ClInclude Include="shinymaterial.h" />
     <ClInclude Include="sincostab.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="triangle.h" />
@@ -171,6 +172,7 @@
     <ClCompile Include="material2.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="renderer.cpp" />
+    <ClCompile Include="shinymaterial.cpp" />
     <ClCompile Include="sincostab.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
