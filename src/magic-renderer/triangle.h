@@ -13,12 +13,13 @@ namespace Magic
     class Triangle : public Object
     {
     public:
-        Triangle(const V3Triple &a_inWorld, Material *a_material, const V2Triple &a_inMaterial);
+        Triangle(Renderer *a_renderer, const V3Triple &a_inWorld,
+                 Material *a_material, const V2Triple &a_inMaterial);
         virtual ~Triangle();
 
         virtual bool hit(RenderVar &a) override;
-        virtual bool light() override;
-        virtual RGBf lightRgbf() override;
+        virtual bool light(RenderVar &a) override;
+        virtual RGBf lightRgbf(RenderVar &a) override;
         virtual void genRay(RenderVar &a) override;
         virtual RGBf fract(RenderVar &a) override;
 

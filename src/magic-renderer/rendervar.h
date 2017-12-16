@@ -12,6 +12,7 @@ namespace Magic
 
     struct RenderVar
     {
+        size_t m_ti = -1;
         Matrix4 m_space;
         RGBf m_spectrum;
         Object *m_object = nullptr;

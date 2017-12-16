@@ -5,16 +5,18 @@
 
 namespace Magic
 {
+    class Renderer;
+
     class Material
     {
     public:
-        Material();
+        Material(Renderer *a_renderer);
         virtual ~Material();
         Material(const Material &) = delete;
         Material &operator =(const Material &) = delete;
 
-        virtual bool light();
-        virtual RGBf lightRgbf();
+        virtual bool light(RenderVar &a);
+        virtual RGBf lightRgbf(RenderVar &a);
         virtual void genRay(RenderVar &a);
         virtual RGBf fract(RenderVar &a);
     };

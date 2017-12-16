@@ -1,18 +1,18 @@
 #include "stdafx.h"
 #include "material.h"
 
-Magic::Material::Material()
+Magic::Material::Material(Renderer *a_renderer)
 {}
 
 Magic::Material::~Material()
 {}
 
-bool Magic::Material::light()
+bool Magic::Material::light(RenderVar &a)
 {
     return false;
 }
 
-Magic::RGBf Magic::Material::lightRgbf()
+Magic::RGBf Magic::Material::lightRgbf(RenderVar &a)
 {
     return RGBf();
 }

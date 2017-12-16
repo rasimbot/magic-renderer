@@ -4,7 +4,8 @@
 #include "func.h"
 #include "sincostab.h"
 
-Magic::Ball::Ball(const Vector3 &a_p, float a_r, Material *a_material) :
+Magic::Ball::Ball(Renderer *a_renderer, const Vector3 &a_p, float a_r, Material *a_material) :
+    Object(a_renderer),
     m_p(a_p), m_r(a_r), m_material(a_material)
 {}
 
@@ -30,16 +31,16 @@ bool Magic::Ball::hit(RenderVar &a)
     return true;
 }
 
-bool Magic::Ball::light()
+bool Magic::Ball::light(RenderVar &a)
 {
     assert(m_material != nullptr);
-    return m_material->light();
+    return m_material->light(a);
 }
 
-Magic::RGBf Magic::Ball::lightRgbf()
+Magic::RGBf Magic::Ball::lightRgbf(RenderVar &a)
 {
     assert(m_material != nullptr);
-    return m_material->lightRgbf();
+    return m_material->lightRgbf(a);
 }
 
 void Magic::Ball::genRay(RenderVar &a)

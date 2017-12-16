@@ -4,8 +4,9 @@
 #include "func.h"
 #include "sincostab.h"
 
-Magic::Triangle::Triangle(const V3Triple &a_inWorld,
+Magic::Triangle::Triangle(Renderer *a_renderer, const V3Triple &a_inWorld,
                           Material *a_material, const V2Triple &a_inMaterial) :
+    Object(a_renderer),
     m_w(a_inWorld), m_material(a_material)
 {
     assert(m_material != nullptr);
@@ -43,16 +44,16 @@ bool Magic::Triangle::hit(RenderVar &a)
     return true;
 }
 
-bool Magic::Triangle::light()
+bool Magic::Triangle::light(RenderVar &a)
 {
     assert(m_material != nullptr);
-    return m_material->light();
+    return m_material->light(a);
 }
 
-Magic::RGBf Magic::Triangle::lightRgbf()
+Magic::RGBf Magic::Triangle::lightRgbf(RenderVar &a)
 {
     assert(m_material != nullptr);
-    return m_material->lightRgbf();
+    return m_material->lightRgbf(a);
 }
 
 void Magic::Triangle::genRay(RenderVar &a)

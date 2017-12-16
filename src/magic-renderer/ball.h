@@ -9,12 +9,12 @@ namespace Magic
     class Ball : public Object
     {
     public:
-        Ball(const Vector3 &a_p, float a_r, Material *a_material);
+        Ball(Renderer *a_renderer, const Vector3 &a_p, float a_r, Material *a_material);
         virtual ~Ball();
 
         virtual bool hit(RenderVar &a) override;
-        virtual bool light() override;
-        virtual RGBf lightRgbf() override;
+        virtual bool light(RenderVar &a) override;
+        virtual RGBf lightRgbf(RenderVar &a) override;
         virtual void genRay(RenderVar &a) override;
         virtual RGBf fract(RenderVar &a) override;
 

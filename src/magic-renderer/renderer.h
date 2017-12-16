@@ -5,8 +5,10 @@
 #include <vector>
 #include <list>
 #include "object.h"
+#include <vector>
 #include <random>
 #include "material.h"
+#include <atomic>
 
 namespace Magic
 {
@@ -15,6 +17,19 @@ namespace Magic
     public:
         typedef std::vector<RGBf> Samples;
 
+    private:
+        struct PerThreadData
+        {
+            size_t m_recursion;
+            std::vector<Samples> m_samples;
+
+            std::mt19937 m_randGenCam;
+            std::uniform_real_distribution<float> m_randCam;
+
+            float randCam() { return m_randCam(m_randGenCam); }
+        };
+
+    public:
         Renderer();
         ~Renderer();
 
@@ -29,18 +44,19 @@ namespace Magic
         void setCameraSizes(float a_width, float a_height, float a_length);
         Matrix4 look(const Vector3 &a_from, const Vector3 &a_to, const Vector3 &a_up);
 
+        constexpr size_t threadNumber() const { return 4; }
+
         void add(Object *a);
         void add(Material *a);
 
         void setRaysNumStrategy(const std::vector<size_t> &a);
 
+        void doAsync(size_t a_threadIndex);
         void doIt();
 
         size_t hit() const { return m_hit; }
         size_t misses() const { return m_misses; }
         size_t dropped() const { return m_dropped; }
-
-        float randCam() { return m_randCam(m_randGenCam); }
 
         static ARGB spectrumToRGB(const RGBf &a);
 
@@ -48,8 +64,8 @@ namespace Magic
         void calcBufToCam();
         bool ray(RenderVar &a);
         bool refl(RenderVar &a);
-        bool camRay(const Vector3 &a_dir, RGBf &a_spectrum);
-        bool processPixel(const Vector3 &a_dir, ARGB &a_color);
+        bool camRay(size_t a_threadIndex, const Vector3 &a_dir, RGBf &a_spectrum);
+        bool processPixel(size_t a_threadIndex, const Vector3 &a_dir, ARGB &a_color);
 
         size_t m_bufWidth = 0, m_bufHeight = 0;
         ARGB *m_buf = nullptr;
@@ -60,13 +76,8 @@ namespace Magic
         std::list<Object *> m_objects;
         std::list<Material *> m_materials;
 
-        size_t m_recursion;
-        std::vector<Samples> m_samples;
-        size_t m_hit, m_misses, m_dropped;
-
-        std::random_device m_randDev;
-        std::mt19937 m_randGenCam;
-        std::uniform_real_distribution<float> m_randCam;
+        std::atomic<size_t> m_hit, m_misses, m_dropped;
+        std::vector<PerThreadData> m_vPtd;
     };
 }
 

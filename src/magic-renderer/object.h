@@ -5,17 +5,19 @@
 
 namespace Magic
 {
+    class Renderer;
+
     class Object
     {
     public:
-        Object();
+        Object(Renderer *a_renderer);
         virtual ~Object();
         Object(const Object &) = delete;
         Object &operator =(const Object &) = delete;
 
         virtual bool hit(RenderVar &a);
-        virtual bool light();
-        virtual RGBf lightRgbf();
+        virtual bool light(RenderVar &a);
+        virtual RGBf lightRgbf(RenderVar &a);
         virtual void genRay(RenderVar &a);
         virtual RGBf fract(RenderVar &a);
     };

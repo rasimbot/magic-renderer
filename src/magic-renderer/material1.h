@@ -8,11 +8,11 @@ namespace Magic
     class Material1 : public Material
     {
     public:
-        Material1(const RGBf &a_rgbf);
+        Material1(Renderer *a_renderer, const RGBf &a_rgbf);
         virtual ~Material1();
 
-        virtual bool light() override;
-        virtual RGBf lightRgbf() override;
+        virtual bool light(RenderVar &a) override;
+        virtual RGBf lightRgbf(RenderVar &a) override;
 
     private:
         RGBf m_rgbf;
