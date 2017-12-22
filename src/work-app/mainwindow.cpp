@@ -56,11 +56,11 @@ void MainWindow::on_pushButton_do_clicked()
     m_r.add(l_material2.get());
     auto l_rpMaterial2 = l_material2.release();
 
-    auto l_object1(std::make_unique<Magic::Ball>(&m_r, Magic::Vector3(-1, 0, 6), 0.8, l_rpMaterial1));
+    auto l_object1(std::make_unique<Magic::Ball1>(&m_r, Magic::Vector3(-1, 0, 6), 0.8, l_rpMaterial1));
     m_r.add(l_object1.get());
     m_ball1 = l_object1.release();
 
-    auto l_object2(std::make_unique<Magic::Ball>(&m_r, Magic::Vector3(1, 0, 6), 0.8, l_rpMaterial2));
+    auto l_object2(std::make_unique<Magic::Ball1>(&m_r, Magic::Vector3(1, 0, 6), 0.8, l_rpMaterial2));
     m_r.add(l_object2.get());
     m_ball2 = l_object2.release();
 
@@ -119,7 +119,7 @@ void MainWindow::on_pushButton_do_clicked()
     m_r.add(l_object10.get());
     l_object10.release();
 
-    std::vector<size_t> l_strategy{ 48, 24, 12, 6, 3 };
+    std::vector<size_t> l_strategy{ /*48, 24, */12, 6, 3 };
     m_r.setRaysNumStrategy(l_strategy);
     m_r.doIt();
 

@@ -1,16 +1,16 @@
-#ifndef __MAGIC_RENDERER_BALL_H
-#define __MAGIC_RENDERER_BALL_H
+#ifndef __MAGIC_RENDERER_BALL1_H
+#define __MAGIC_RENDERER_BALL1_H
 
 #include "object.h"
 #include "material.h"
 
 namespace Magic
 {
-    class Ball : public Object
+    class Ball1 : public Object
     {
     public:
-        Ball(Renderer *a_renderer, const Vector3 &a_p, float a_r, Material *a_material);
-        virtual ~Ball();
+        Ball1(Renderer *a_renderer, const Vector3 &a_p, float a_r, Material *a_material);
+        virtual ~Ball1();
 
         virtual bool hit(RenderVar &a) override;
         virtual bool light(RenderVar &a) override;
@@ -27,4 +27,4 @@ namespace Magic
     };
 }
 
-#endif // __MAGIC_RENDERER_BALL_H
+#endif // __MAGIC_RENDERER_BALL1_H

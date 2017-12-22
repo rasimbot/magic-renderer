@@ -1,18 +1,18 @@
 #include "stdafx.h"
-#include "ball.h"
+#include "ball1.h"
 #include "renderer.h"
 #include "func.h"
 #include "sincostab.h"
 
-Magic::Ball::Ball(Renderer *a_renderer, const Vector3 &a_p, float a_r, Material *a_material) :
+Magic::Ball1::Ball1(Renderer *a_renderer, const Vector3 &a_p, float a_r, Material *a_material) :
     Object(a_renderer),
     m_p(a_p), m_r(a_r), m_material(a_material)
 {}
 
-Magic::Ball::~Ball()
+Magic::Ball1::~Ball1()
 {}
 
-bool Magic::Ball::hit(RenderVar &a)
+bool Magic::Ball1::hit(RenderVar &a)
 {
     const Vector3 l_inRaySpace(a.m_space * m_p);
     const float l_d = m_r * m_r -
@@ -31,31 +31,31 @@ bool Magic::Ball::hit(RenderVar &a)
     return true;
 }
 
-bool Magic::Ball::light(RenderVar &a)
+bool Magic::Ball1::light(RenderVar &a)
 {
     assert(m_material != nullptr);
     return m_material->light(a);
 }
 
-Magic::RGBf Magic::Ball::lightRgbf(RenderVar &a)
+Magic::RGBf Magic::Ball1::lightRgbf(RenderVar &a)
 {
     assert(m_material != nullptr);
     return m_material->lightRgbf(a);
 }
 
-void Magic::Ball::genRay(RenderVar &a)
+void Magic::Ball1::genRay(RenderVar &a)
 {
     assert(m_material != nullptr);
     m_material->genRay(a);
 }
 
-Magic::RGBf Magic::Ball::fract(RenderVar &a)
+Magic::RGBf Magic::Ball1::fract(RenderVar &a)
 {
     assert(m_material != nullptr);
     return m_material->fract(a);
 }
 
-void Magic::Ball::set(const Vector3 &a_p)
+void Magic::Ball1::set(const Vector3 &a_p)
 {
     m_p = a_p;
 }

@@ -144,7 +144,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="argb.h" />
-    <ClInclude Include="ball.h" />
+    <ClInclude Include="ball1.h" />
+    <ClInclude Include="ball2.h" />
     <ClInclude Include="checkermaterial.h" />
     <ClInclude Include="defs.h" />
     <ClInclude Include="func.h" />
@@ -165,7 +166,8 @@
     <ClInclude Include="vector4.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ball.cpp" />
+    <ClCompile Include="ball1.cpp" />
+    <ClCompile Include="ball2.cpp" />
     <ClCompile Include="checkermaterial.cpp" />
     <ClCompile Include="material.cpp" />
     <ClCompile Include="material1.cpp" />

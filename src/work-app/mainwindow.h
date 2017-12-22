@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <renderer.h>
-#include <ball.h>
+#include <ball1.h>
 #include <triangle.h>
 
 namespace Ui
@@ -30,7 +30,7 @@ private:
     QWidget *m_drawArea = nullptr;
     QImage m_i;
     Magic::Renderer m_r;
-    Magic::Ball *m_ball1 = nullptr, *m_ball2 = nullptr;
+    Magic::Ball1 *m_ball1 = nullptr, *m_ball2 = nullptr;
 };
 
 #endif // __WORK_APP_MAINWINDOW_H
