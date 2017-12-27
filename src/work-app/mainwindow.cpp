@@ -13,6 +13,8 @@
 #include <checkermaterial.h>
 #include <shinymaterial.h>
 #include <array>
+#include <ball2.h>
+#include <func.h>
 
 MainWindow::MainWindow(QWidget *a_parent) :
     QWidget(a_parent),
@@ -43,6 +45,7 @@ void MainWindow::onDrawAreaPaint()
 void MainWindow::on_pushButton_do_clicked()
 {
     Q_ASSERT(m_ui != nullptr && m_drawArea != nullptr);
+
     m_r.setBufferSize(m_drawArea->width(), m_drawArea->height());
     m_r.setCameraSizes(2, 2, 2);
 
@@ -56,17 +59,32 @@ void MainWindow::on_pushButton_do_clicked()
     m_r.add(l_material2.get());
     auto l_rpMaterial2 = l_material2.release();
 
+    auto l_material3(std::make_unique<Magic::Material2>(&m_r, Magic::RGBf{ 0.25f, 0.6f, 0.6f }));
+    m_r.add(l_material3.get());
+    auto l_rpMaterial3 = l_material3.release();
+
+    auto l_material4(std::make_unique<Magic::Material1>(&m_r, Magic::RGBf{ 0.98f, 0.98f, 0.8f }));
+    m_r.add(l_material4.get());
+    auto l_rpMaterial4 = l_material4.release();
+
+    auto l_material5(std::make_unique<Magic::CheckerMaterial>(&m_r, Magic::RGBf{ 0.1f, 0.1f, 0.6f },
+                                                                    Magic::RGBf{ 0.6f, 0.1f, 0.1f }));
+    m_r.add(l_material5.get());
+    auto l_rpMaterial5 = l_material5.release();
+
+    auto l_material6(std::make_unique<Magic::CheckerMaterial>(&m_r, Magic::RGBf{ 0.25f, 0.35f, 0.6f },
+                                                                    Magic::RGBf{ 0.98f, 0.98f, 0.98f }));
+    m_r.add(l_material6.get());
+    auto l_rpMaterial6 = l_material6.release();
+
     auto l_object1(std::make_unique<Magic::Ball1>(&m_r, Magic::Vector3(-1, 0, 6), 0.8, l_rpMaterial1));
     m_r.add(l_object1.get());
     m_ball1 = l_object1.release();
 
-    auto l_object2(std::make_unique<Magic::Ball1>(&m_r, Magic::Vector3(1, 0, 6), 0.8, l_rpMaterial2));
+    const Magic::V2Triple l_inMaterial2{ Magic::Vector2{ 0, 0 }, Magic::Vector2{ 16, 0 }, Magic::Vector2{ 16, 8 } };
+    auto l_object2(std::make_unique<Magic::Ball2>(&m_r, Magic::Vector3(1, 0, 6), 0.8, Magic::Vector3(0.5f, 1, 5), 0.05f, l_rpMaterial6, l_inMaterial2));
     m_r.add(l_object2.get());
-    m_ball2 = l_object2.release();
-
-    auto l_material3(std::make_unique<Magic::Material2>(&m_r, Magic::RGBf{ 0.25f, 0.6f, 0.6f }));
-    m_r.add(l_material3.get());
-    auto l_rpMaterial3 = l_material3.release();
+    /*m_ball2 = */l_object2.release();
 
     const Magic::V3Triple l_inWorld3{ Magic::Vector3(-2, -2, 4), Magic::Vector3(-2, -2, 8), Magic::Vector3(-2, 2, 8) };
     auto l_object3(std::make_unique<Magic::Triangle>(&m_r, l_inWorld3, l_rpMaterial3, Magic::V2Triple()));
@@ -88,10 +106,6 @@ void MainWindow::on_pushButton_do_clicked()
     m_r.add(l_object6.get());
     l_object6.release();
 
-    auto l_material4(std::make_unique<Magic::Material1>(&m_r, Magic::RGBf{ 0.98f, 0.98f, 0.8f }));
-    m_r.add(l_material4.get());
-    auto l_rpMaterial4 = l_material4.release();
-
     const Magic::V3Triple l_inWorld7{ Magic::Vector3(2, 2, 4), Magic::Vector3(-2, 2, 4), Magic::Vector3(-2, 2, 8) };
     auto l_object7(std::make_unique<Magic::Triangle>(&m_r, l_inWorld7, l_rpMaterial4, Magic::V2Triple()));
     m_r.add(l_object7.get());
@@ -101,11 +115,6 @@ void MainWindow::on_pushButton_do_clicked()
     auto l_object8(std::make_unique<Magic::Triangle>(&m_r, l_inWorld8, l_rpMaterial4, Magic::V2Triple()));
     m_r.add(l_object8.get());
     l_object8.release();
-
-    auto l_material5(std::make_unique<Magic::CheckerMaterial>(&m_r, Magic::RGBf{ 0.1f, 0.1f, 0.6f },
-                                                                    Magic::RGBf{ 0.6f, 0.1f, 0.1f }));
-    m_r.add(l_material5.get());
-    auto l_rpMaterial5 = l_material5.release();
 
     const Magic::V3Triple l_inWorld9{ Magic::Vector3(-2, -2, 4), Magic::Vector3(2, -2, 4), Magic::Vector3(2, -2, 8) };
     const Magic::V2Triple l_inMaterial9{ Magic::Vector2{ 0, 0 }, Magic::Vector2{ 10, 0 }, Magic::Vector2{ 10, 10 } };
@@ -119,7 +128,7 @@ void MainWindow::on_pushButton_do_clicked()
     m_r.add(l_object10.get());
     l_object10.release();
 
-    std::vector<size_t> l_strategy{ /*48, 24, */12, 6, 3 };
+    std::vector<size_t> l_strategy{ 48, 24, 12, 6, 3 };
     m_r.setRaysNumStrategy(l_strategy);
     m_r.doIt();
 

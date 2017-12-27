@@ -43,7 +43,7 @@ namespace Magic
 
     inline Matrix4 rotateXY(const Vector3 &a)
     {
-        const float l_length = length(a);
+        const float l_length = length(Vector3(a.x, a.y, 0));
         const float l_sin = a.y / l_length, l_cos = a.x / l_length;
         return Matrix4{ l_cos, -l_sin, 0, 0,
                         l_sin, l_cos, 0, 0,
@@ -51,13 +51,44 @@ namespace Magic
                         0, 0, 0, 1 };
     }
 
+    inline Matrix4 rotateXZ(const Vector3 &a)
+    {
+        const float l_length = length(Vector3(a.x, 0, a.z));
+        const float l_sin = a.z / l_length, l_cos = a.x / l_length;
+        return Matrix4{ l_cos, 0, -l_sin, 0,
+                        0, 1, 0, 0,
+                        l_sin, 0, l_cos, 0,
+                        0, 0, 0, 1 };
+    }
+
     inline Matrix4 rotateYZ(const Vector3 &a)
     {
-        const float l_length = length(a);
+        const float l_length = length(Vector3(0, a.y, a.z));
         const float l_sin = a.z / l_length, l_cos = a.y / l_length;
         return Matrix4{ 1, 0, 0, 0,
                         0, l_cos, -l_sin, 0,
                         0, l_sin, l_cos, 0,
+                        0, 0, 0, 1 };
+    }
+
+    inline Matrix4 rotateArbitr(const Vector3 &a_axis, const Vector2 &a_hypo)
+    {
+        //https://stackoverflow.com/a/6721649/5634114
+        const Vector3 l_u(normalized(a_axis));
+        const float l_length = length(Vector3(a_hypo, 0));
+        const float l_sin = a_hypo.y / l_length, l_cos = a_hypo.x / l_length;
+        return Matrix4{ l_cos + l_u.x * l_u.x * (1 - l_cos),
+                        l_u.x * l_u.y * (1 - l_cos) - l_u.z * l_sin,
+                        l_u.x * l_u.z * (1 - l_cos) + l_u.y * l_sin,
+                        0,
+                        l_u.y * l_u.x * (1 - l_cos) + l_u.z * l_sin,
+                        l_cos + l_u.y * l_u.y * (1 - l_cos),
+                        l_u.y * l_u.z * (1 - l_cos) - l_u.x * l_sin,
+                        0,
+                        l_u.z * l_u.x * (1 - l_cos) - l_u.y * l_sin,
+                        l_u.z * l_u.y * (1 - l_cos) + l_u.x * l_sin,
+                        l_cos + l_u.z * l_u.z * (1 - l_cos),
+                        0,
                         0, 0, 0, 1 };
     }
 

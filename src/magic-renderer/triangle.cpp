@@ -7,19 +7,10 @@
 Magic::Triangle::Triangle(Renderer *a_renderer, const V3Triple &a_inWorld,
                           Material *a_material, const V2Triple &a_inMaterial) :
     Object(a_renderer),
-    m_w(a_inWorld), m_material(a_material)
+    m_w(a_inWorld), m_material(a_material),
+    m_p2m(proportionalToMaterial(a_inMaterial))
 {
     assert(m_material != nullptr);
-    if (a_inMaterial.empty()) return;
-    const Vector3 l_mV1(a_inMaterial[1] - a_inMaterial[0], 0);
-    const Vector3 l_mFrom(a_inMaterial[0], 0);
-    const Vector3 l_mTo(a_inMaterial[0], 1);
-    const Vector3 l_mUp(cross(Vector3(0, 0, 1), l_mV1));
-    const Matrix4 l_m2t(transf(l_mFrom, l_mTo, l_mUp));
-    const Vector3 l_t2(l_m2t * Vector3(a_inMaterial[1], 0)), l_t3(l_m2t * Vector3(a_inMaterial[2], 0));
-    const Vector3 l_up2(cross(Vector3(0, 0, 1), Vector3(l_mV1.x, -l_mV1.y)));
-    const Matrix4 l_t2pm(transf(Vector3(), Vector3(0, 0, 1), l_up2));
-    m_p2m = translate(Vector3(a_inMaterial[0], 0)) * l_t2pm * scale(Vector3(l_t2.x, l_t3.y));
 }
 
 Magic::Triangle::~Triangle()

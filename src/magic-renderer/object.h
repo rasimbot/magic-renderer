@@ -7,6 +7,9 @@ namespace Magic
 {
     class Renderer;
 
+    typedef std::array<Vector2, 3> V2Triple;
+    typedef std::array<Vector3, 3> V3Triple;
+
     class Object
     {
     public:
@@ -20,6 +23,8 @@ namespace Magic
         virtual RGBf lightRgbf(RenderVar &a);
         virtual void genRay(RenderVar &a);
         virtual RGBf fract(RenderVar &a);
+
+        static Matrix4 proportionalToMaterial(const V2Triple &a_inMaterial);
     };
 }
 

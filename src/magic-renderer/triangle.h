@@ -7,9 +7,6 @@
 
 namespace Magic
 {
-    typedef std::array<Vector2, 3> V2Triple;
-    typedef std::array<Vector3, 3> V3Triple;
-
     class Triangle : public Object
     {
     public:

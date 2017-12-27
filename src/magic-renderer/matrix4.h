@@ -33,6 +33,14 @@ namespace Magic
                         o.m41 * a.m14 + o.m42 * a.m24 + o.m43 * a.m34 + o.m44 * a.m44 };
     }
 
+    inline bool isFinite(const Matrix4 &a)
+    {
+        return isFinite(Vector4(a.m11, a.m12, a.m13, a.m14)) &&
+               isFinite(Vector4(a.m21, a.m22, a.m23, a.m24)) &&
+               isFinite(Vector4(a.m31, a.m32, a.m33, a.m34)) &&
+               isFinite(Vector4(a.m41, a.m42, a.m43, a.m44));
+    }
+
     inline Vector4 operator *(const Matrix4 &a_m, const Vector4 &a_v)
     {
         return Vector4{ a_m.m11 * a_v.x + a_m.m12 * a_v.y + a_m.m13 * a_v.z + a_m.m14 * a_v.w,

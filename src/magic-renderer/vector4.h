@@ -14,6 +14,11 @@ namespace Magic
 
         operator Vector3() const { return Vector3(x, y, z); }
     };
+
+    inline bool isFinite(const Vector4 &a)
+    {
+        return std::isfinite(a.x) && std::isfinite(a.y) && std::isfinite(a.z) && std::isfinite(a.w);
+    }
 }
 
 #endif // __MAGIC_RENDERER_VECTOR4_H
