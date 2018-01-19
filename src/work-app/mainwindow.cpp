@@ -14,7 +14,6 @@
 #include <shinymaterial.h>
 #include <array>
 #include <ball2.h>
-#include <func.h>
 
 MainWindow::MainWindow(QWidget *a_parent) :
     QWidget(a_parent),
