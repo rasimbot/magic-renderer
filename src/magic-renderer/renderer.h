@@ -5,7 +5,6 @@
 #include <vector>
 #include <list>
 #include "object.h"
-#include <vector>
 #include <random>
 #include "material.h"
 #include <atomic>
