@@ -23,7 +23,7 @@
     <ProjectGuid>{30C9DEF1-B294-4786-85AC-A7D748AC600F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>magicrenderer</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
