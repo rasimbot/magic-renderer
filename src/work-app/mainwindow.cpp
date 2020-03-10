@@ -14,6 +14,7 @@
 #include <shinymaterial.h>
 #include <array>
 #include <ball2.h>
+#include <QElapsedTimer>
 
 MainWindow::MainWindow(QWidget *a_parent) :
     QWidget(a_parent),
@@ -44,6 +45,9 @@ void MainWindow::onDrawAreaPaint()
 void MainWindow::on_pushButton_do_clicked()
 {
     Q_ASSERT(m_ui != nullptr && m_drawArea != nullptr);
+
+    QElapsedTimer l_et;
+    l_et.start();
 
     m_r.setBufferSize(m_drawArea->width(), m_drawArea->height());
     m_r.setCameraSizes(2, 2, 2);
@@ -136,8 +140,8 @@ void MainWindow::on_pushButton_do_clicked()
 
     repaint();
 
-    const QString l_template("hit: %1\nmisses: %2\ndropped: %3\n");
-    const QString l_stat(l_template.arg(m_r.hit()).arg(m_r.misses()).arg(m_r.dropped()));
+    const QString l_template("hit: %1\nmisses: %2\ndropped: %3\nelapsed: %4\n");
+    const QString l_stat(l_template.arg(m_r.hit()).arg(m_r.misses()).arg(m_r.dropped()).arg(l_et.elapsed() / 1000));
     m_ui->plainTextEdit_log->setPlainText(l_stat);
 }
 
